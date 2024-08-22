@@ -1,2 +1,4 @@
 *.vtk
 *.pt
+dataset/
+generated_data/
