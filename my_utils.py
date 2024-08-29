@@ -8,6 +8,7 @@ import pandas as pd
 import random
 import matplotlib.pyplot as plt
 from scipy.spatial import KDTree
+from matplotlib.ticker import FuncFormatter
 
 # Define a function to check if a point is on a line segment between two other points
 def is_point_on_segment(p, q, r, tolerance=1e-6):
@@ -218,6 +219,215 @@ def read_all_folders_vtk_pairs(root_folder):
         print(f"Processing folder {index + 1}/{total_folders} ({progress_percent:.2f}%) completed: Reading from: {outputs_path}")
 
     return vtk_pairs
+
+def read_all_vtks_and_interpolate(folder_path):
+    """
+    Reads VTK files in the specified folder that have a numeric identifier
+    within a defined range and at specific intervals, sorts them by numeric order,
+    and then processes the data through interpolation.
+
+    Args:
+        folder_path (str): Path to the folder containing VTK files.
+        grid_size (float): The grid size for spatial hashing in the interpolation process.
+
+    Returns:
+        dict: A dictionary where each key is the numeric identifier of the file and the value is
+              a dictionary of interpolated scalar fields plus a channel filled with the numeric identifier.
+        np.array: The x-coordinates of the interpolation grid.
+        np.array: The y-coordinates of the interpolation grid.
+    """
+    vtk_files = [file for file in os.listdir(folder_path)
+                 if file.startswith("physics_allparticle") and file.endswith(".vtk")]
+    vtk_files_sorted = sorted(vtk_files, key=sort_key_func)
+
+    # Filter the sorted files based on specific criteria
+    vtk_files_filtered = [file for file in vtk_files_sorted
+                          if 0 <= int(re.findall(r'\d+', file)[0]) <= 20000
+                          and int(re.findall(r'\d+', file)[0]) % 2000 == 0]
+
+    total_files = len(vtk_files_filtered)
+    all_data = []
+
+    # Reading and processing the filtered VTK files
+    for index, filename in enumerate(vtk_files_filtered):
+        try:
+            filepath = os.path.join(folder_path, filename)
+            data = read_mesh_cellCon(filepath, 0)
+            if not data or not isinstance(data[0], np.ndarray) or data[0].size == 0:
+                print(f"Warning: No valid point data in {filename}")
+                continue
+            all_data.append((filename, data))
+            progress = (index + 1) / total_files * 100
+            print(f"Progress: {progress:.2f}% - Processed {filename}")
+        except Exception as e:
+            print(f"Error processing {filename}: {e}")
+            continue
+
+    if not all_data:
+        print("No valid data available from files.")
+        return None, None, None
+
+    # Determine the bounds for the interpolation grid using the points from data[0]
+    all_points = np.concatenate([data[0] for _, data in all_data])
+    min_x, min_y = np.min(all_points, axis=0)
+    max_x, max_y = np.max(all_points, axis=0)
+    max_x = max(max_x, max_y)
+    max_y = max(max_x, max_y)
+    min_x = min(min_x, min_y)
+    min_y = min(min_x, min_y)
+
+    x_coords = np.arange(min_x, max_x + 1, 1)
+    y_coords = np.arange(min_y, max_y + 1, 1)
+    grid_x, grid_y = np.meshgrid(x_coords, y_coords)
+    grid_points = np.vstack([grid_x.ravel(), grid_y.ravel()]).T
+
+    interpolated_data = {}
+    # Process each file and create the data structure with additional channel
+    for filename, data in all_data:
+        numeric_id = re.findall(r'\d+', filename)[0]  # Extract numeric identifier from filename
+        unique_points, scalar_fields = data[0], data[1]
+        dataset = {}
+        for field_name, values in scalar_fields.items():
+            interpolated_values = interpolate_features(unique_points, {field_name: values}, grid_points, 1)
+            interpolated_matrix = interpolated_values[field_name].reshape(len(y_coords), len(x_coords))
+            dataset[field_name] = interpolated_matrix
+        
+        # Create a matrix filled with the numeric identifier divided by 100 and converted to an integer
+        iterations_matrix = np.full_like(interpolated_matrix, int(int(numeric_id) / 100), dtype=np.float32)
+        dataset['iterations'] = iterations_matrix  # Additional channel
+
+        interpolated_data[numeric_id] = dataset  # Store under numeric identifier
+
+    print("All files processed and interpolated.")
+    return interpolated_data, grid_x, grid_y
+
+def preprocess_data(interpolated_data):
+    """
+    Prepare data for training by processing all entries in interpolated data. It uses the phi from
+    the earliest time step, theta from the latest time step, and the iterations matrix from each
+    time step, pairing each with its current phi.
+
+    Args:
+        interpolated_data (dict): Dictionary with numeric identifiers as keys
+                                  and dictionaries of fields ('phi', 'theta', 'iterations') as values.
+
+    Returns:
+        list: A list of tuples where each tuple contains tensors (input_tensor, target_tensor).
+    """
+    if not interpolated_data:
+        raise ValueError("Interpolated data is empty.")
+
+    # Automatically determine the initial and final time steps
+    time_keys = sorted(interpolated_data.keys(), key=int)
+    initial_time_id = time_keys[0]
+    final_time_id = time_keys[-1]
+
+    # Retrieve data for the initial and final time steps
+    initial_phi = interpolated_data[initial_time_id]['phi']
+    final_theta = interpolated_data[final_time_id]['theta']
+
+    data_pairs = []
+
+    # Loop through all time steps
+    for time_id, fields in interpolated_data.items():
+        current_phi = fields['phi']
+        iterations_matrix = fields['iterations']  # Assuming 'iterations' is already correctly populated
+
+        # Stack input features: initial phi, final theta, iterations matrix
+        input_features = np.stack([initial_phi, final_theta, iterations_matrix], axis=0)
+        input_tensor = torch.tensor(input_features, dtype=torch.float32)
+        target_tensor = torch.tensor(current_phi, dtype=torch.float32)
+
+        # Append each pair of input and target tensors to the list
+        data_pairs.append((input_tensor, target_tensor))
+
+    return data_pairs
+
+def plot_interpolated_data(interpolated_data, grid_x, grid_y):
+    """
+    Plots all fields in the interpolated data for each file.
+
+    Args:
+        interpolated_data (dict): Dictionary with numeric identifiers as keys
+                                  and dictionaries of fields ('phi', 'theta', 'iterations') as values.
+        grid_x (np.array): The grid's x-coordinates.
+        grid_y (np.array): The grid's y-coordinates.
+    """
+    for filename, fields in interpolated_data.items():
+        num_fields = len(fields)
+        cols = 6  # Number of columns in the subplot grid
+        rows = (num_fields + cols - 1) // cols  # Calculate the number of rows needed
+
+        # Create a figure with subplots
+        fig, axes = plt.subplots(rows, cols, figsize=(15, 3 * rows))  # Adjust the size as needed
+
+        # Make sure axes is always an array, even with one subplot
+        axes = np.array(axes).reshape(-1)
+
+        # Plot each scalar field in a subplot
+        for i, (field_name, data_matrix) in enumerate(fields.items()):
+            ax = axes[i]
+            contour = ax.contourf(grid_x, grid_y, data_matrix, levels=50, cmap='viridis')
+            fig.colorbar(contour, ax=ax)
+            ax.set_title(f'{filename}: {field_name}')
+            ax.set_xlabel('X Coordinate')
+            ax.set_ylabel('Y Coordinate')
+
+        # Hide any unused subplots (in case there are more subplots than fields)
+        for j in range(i + 1, len(axes)):
+            axes[j].axis('off')
+
+        # Adjust layout for better spacing
+        plt.tight_layout()
+
+        # Show the combined plot for this file's fields
+        plt.show()
+
+def integer_format(x, pos):
+    """ Custom formatter to convert floats to integers on color bars. """
+    return f'{int(x)}'
+
+def plot_data_pairs(data_pairs, grid_x, grid_y, num_plots):
+    # Select num_plots random data pairs if there are at least 5, or all if there are fewer
+    if len(data_pairs) > num_plots:
+        sampled_pairs = random.sample(data_pairs, num_plots)
+    else:
+        sampled_pairs = data_pairs
+
+    for idx, (input_tensor, target_tensor) in enumerate(sampled_pairs):
+        input_tensor_np = input_tensor.numpy()  # Convert tensor to numpy array if necessary
+        target_tensor_np = target_tensor.numpy()
+
+        # Create a figure for each pair
+        fig, axes = plt.subplots(1, 4, figsize=(20, 5))  # Assuming three input channels and one target
+
+        # Plot each channel in the input tensor
+        for i in range(input_tensor_np.shape[0]):  # Navigate through channels
+            ax = axes[i]
+            data_matrix = input_tensor_np[i, :, :]
+            contour = ax.contourf(grid_x, grid_y, data_matrix, levels=50, cmap='viridis')
+            
+            # Apply specific formatting for the third input channel
+            if i == 2:  # Specifically for the third input channel
+                cbar = fig.colorbar(contour, ax=ax, format=FuncFormatter(integer_format))
+            else:
+                cbar = fig.colorbar(contour, ax=ax)
+            
+            ax.set_title(f'Input Channel {i+1}')
+            ax.set_xlabel('X Coordinate')
+            ax.set_ylabel('Y Coordinate')
+
+        # Plot the target tensor
+        ax = axes[-1]  # Last subplot for the target
+        contour = ax.contourf(grid_x, grid_y, target_tensor_np, levels=50, cmap='viridis')
+        fig.colorbar(contour, ax=ax)
+        ax.set_title('Target Phi')
+        ax.set_xlabel('X Coordinate')
+        ax.set_ylabel('Y Coordinate')
+
+        # Display the plot
+        plt.tight_layout()
+        plt.show()
 
 # Define a function to find points near a given line segment for further processing
 def get_nearby_points(p, q, grid, points, grid_size=1.0):
