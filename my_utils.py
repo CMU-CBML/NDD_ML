@@ -1,9 +1,13 @@
+import os
+import re
 import numpy as np
 from collections import defaultdict
 import torch
 from torch_geometric.data import Data
 import pandas as pd
 import random
+import matplotlib.pyplot as plt
+from scipy.spatial import KDTree
 
 # Define a function to check if a point is on a line segment between two other points
 def is_point_on_segment(p, q, r, tolerance=1e-6):
@@ -122,6 +126,99 @@ def read_mesh_allCon(filename, grid_size=1.0):
 
     return unique_points, deduplicated_data, edges, edge_attributes
 
+def sort_key_func(filename):
+    """
+    Extracts numbers from a filename and converts them to an integer for sorting.
+    """
+    numbers = re.findall(r'\d+', filename)
+    return int(numbers[0]) if numbers else float('inf')
+
+def detailed_structure_info(data):
+    print(f"List contains {len(data)} items.")
+    for index, item in enumerate(data):
+        if isinstance(item, np.ndarray):
+            print(f"Item {index + 1}: Numpy array of shape {item.shape}, dtype {item.dtype}")
+        elif isinstance(item, dict):
+            print(f"Item {index + 1}: Dictionary with {len(item)} keys")
+            print("   Keys:", list(item.keys()))
+        elif isinstance(item, list):
+            print(f"Item {index + 1}: List of {len(item)} items")
+        elif isinstance(item, pd.DataFrame):
+            print(f"Item {index + 1}: Pandas DataFrame with {item.shape[0]} rows and {item.shape[1]} columns")
+            print("   Columns:", item.columns.tolist())
+        else:
+            print(f"Item {index + 1}: {type(item)}")
+
+def read_vtk_file_pair(folder_path):
+    """
+    Reads the first and last VTK files in the specified folder that start with "physics_allparticles"
+    and end with ".vtk", sorted by numeric order in filenames.
+
+    Args:
+        folder_path (str): Path to the folder containing VTK files.
+
+    Returns:
+        tuple: A tuple containing data from the middle and last VTK files.
+    """
+    # Filter files that start with "physics_allparticles" and end with ".vtk"
+    vtk_files = [file for file in os.listdir(folder_path) 
+                 if file.startswith("physics_allparticle") and file.endswith(".vtk")]
+    
+    vtk_files_sorted = sorted(vtk_files, key=sort_key_func)
+
+    if not vtk_files_sorted:
+        return None
+
+    # Calculate the middle index
+    middle_index = len(vtk_files_sorted) // 2
+
+    # Read the middle and the last files
+    middle_file_path = os.path.join(folder_path, vtk_files_sorted[middle_index])
+    last_file_path = os.path.join(folder_path, vtk_files_sorted[-1])
+    # last_file_path = os.path.join(folder_path, vtk_files_sorted[middle_index+2])
+
+    # Assuming `read_mesh_allCon` is defined to read VTK files
+    # first_data = read_mesh_allCon(middle_file_path, 3)
+    # last_data = read_mesh_allCon(last_file_path, 3)
+    first_data = read_mesh_cellCon(middle_file_path, 0)
+    last_data = read_mesh_cellCon(last_file_path, 0)
+    
+    # print("++++++++++++++++++")
+    # print(f"List contains {len(first_data)} items.")
+    # print("Types of items:", [type(item) for item in first_data])
+    # detailed_structure_info(first_data)
+    # print("==================")
+    return (first_data, last_data)
+
+def read_all_folders_vtk_pairs(root_folder):
+    """
+    Reads the first and last VTK files from each subfolder within the root folder that start with "io2D".
+
+    Args:
+        root_folder (str): Path to the root folder containing subfolders with VTK files.
+
+    Returns:
+        list: A list of tuples, each containing data from the first and last VTK files from each subfolder.
+    """
+    folders = [f for f in os.listdir(root_folder) if f.startswith("io2D")]
+    # folders = folders[:7] # for testing
+    # print(folders)
+    total_folders = len(folders)
+    vtk_pairs = []
+    
+    for index, folder in enumerate(folders):
+        outputs_path = os.path.join(root_folder, folder, "outputs")
+        if os.path.isdir(outputs_path):
+            vtk_pair = read_vtk_file_pair(outputs_path)
+            if vtk_pair:
+                vtk_pairs.append(vtk_pair)
+
+        # Calculate and print the progress percentage
+        progress_percent = ((index + 1) / total_folders) * 100
+        print(f"Processing folder {index + 1}/{total_folders} ({progress_percent:.2f}%) completed: Reading from: {outputs_path}")
+
+    return vtk_pairs
+
 # Define a function to find points near a given line segment for further processing
 def get_nearby_points(p, q, grid, points, grid_size=1.0):
     p_grid_key = (int(p[0] // grid_size), int(p[1] // grid_size))
@@ -148,7 +245,7 @@ def split_edge_by_nodes(edge, points, grid, grid_size=1.0):
     split_points = sorted(set(split_points), key=lambda idx: np.linalg.norm(points[split_points[0]] - points[idx]))
     return [(split_points[i], split_points[i + 1]) for i in range(len(split_points) - 1)]
 
-def read_mesh_cellCon(filename, grid_size=1.0, verbose=1):
+def read_mesh_cellCon(filename, verbose=1):
     """Reads and processes mesh data from a VTK file, ignoring z-coordinates and checking for NaN or INF values."""
     with open(filename, 'r') as file:
         lines = file.readlines()
@@ -208,6 +305,126 @@ def read_mesh_cellCon(filename, grid_size=1.0, verbose=1):
         print("Sample deduplicated scalar data:", {k: v[:5] for k, v in deduplicated_data.items()})
 
     return unique_points, deduplicated_data, elements, pd.DataFrame(edge_attributes)
+
+def calculate_pseudo_coordinates(points, edge_index):
+    """Calculate pseudo-coordinates for each edge based on node coordinates."""
+    pseudo_coords = []
+    for src, dest in edge_index.t().tolist():
+        delta_x = points[dest, 0] - points[src, 0]
+        delta_y = points[dest, 1] - points[src, 1]
+        pseudo_coords.append([delta_x, delta_y])
+
+    pseudo_coords = torch.tensor(pseudo_coords, dtype=torch.float)
+    return pseudo_coords
+
+def interpolate_features(current_points, current_point_data, next_points, k=3):
+    """
+    Interpolate feature data from current points to next points using k-nearest neighbors.
+
+    Args:
+        current_points (array): Coordinates of current points where data is known.
+        current_point_data (dict): Dictionary mapping feature names to arrays of values.
+        next_points (array): Coordinates of next points where data needs to be interpolated.
+        k (int): Number of nearest neighbors to consider for interpolation.
+
+    Returns:
+        dict: A dictionary with interpolated features for each point in next_points.
+    """
+    # Create KDTree from current points
+    tree = KDTree(current_points)
+    interpolated_data = {key: np.zeros(len(next_points)) for key in current_point_data.keys()}
+
+    # Iterate over each next point and interpolate features from nearest current points
+    for i, point in enumerate(next_points):
+        dists, indices = tree.query(point, k=k)  # Find k nearest neighbors
+        
+        # Handle cases where less than k points are available
+        if not isinstance(indices, np.ndarray):
+            indices = [indices]
+            dists = [dists]
+
+        weights = 1 / np.maximum(dists, 1e-6)  # Calculate weights inversely proportional to distance
+        weight_sum = np.sum(weights)
+        
+        # Calculate weighted average for each feature
+        for key in current_point_data.keys():
+            # Extract the specific feature values for the nearest points
+            feature_values = current_point_data[key][indices]
+            # Compute the weighted average of the feature
+            interpolated_data[key][i] = np.dot(weights, feature_values) / weight_sum
+
+    return interpolated_data
+
+def create_graph_data(points, point_data, edge_attributes, y_values):
+    """
+    Create graph data from provided points, elements, point data, edge attributes, and target labels.
+
+    Args:
+        points (array): Coordinates of points.
+        point_data (dict): Features for each point, expected to be a dict of arrays.
+        edge_attributes (list or DataFrame): Attributes for edges.
+        y_values (array): Target labels for each point.
+    """
+    # Convert points to tensor and ensure type is float
+    points_tensor = torch.tensor(points, dtype=torch.float)
+
+    # Prepare features tensor by concatenating feature arrays stored in point_data dictionary
+    feature_tensors = [torch.tensor(point_data[key], dtype=torch.float).unsqueeze(1) for key in point_data.keys()]
+    point_features = torch.cat([points_tensor] + feature_tensors, dim=1)
+
+    # Prepare targets using and next_phi
+    y = torch.tensor(y_values, dtype=torch.float)  # Assuming y_values are directly passable to tensor creation
+
+    # Convert edge attributes to tensor
+    if isinstance(edge_attributes, list):
+        edge_attributes = pd.DataFrame(edge_attributes)
+    edge_index = torch.tensor(edge_attributes[['node1', 'node2']].to_numpy().T, dtype=torch.long)
+
+    # Calculate pseudo-coordinates for edge attributes if needed
+    pseudo_coords = calculate_pseudo_coordinates(points_tensor, edge_index)
+    
+    # Construct graph data object
+    data = Data(x=point_features, edge_index=edge_index, edge_attr=pseudo_coords, y=y)
+    return data
+
+def create_graphs_from_datasets(vtk_pairs):
+    """
+    Processes pairs of VTK data, where each pair's first item is current data and the second item is next data.
+
+    Args:
+        vtk_pairs (list of tuples): List where each tuple contains two sets of data (current and next).
+
+    Returns:
+        list: A list of graph data objects, each representing processed graph data from the pairs.
+    """
+    graph_data_list = []
+
+    for current_data, next_data in vtk_pairs:
+        current_points, current_point_data, _, _ = current_data
+        next_points, next_point_data, _, next_edge_attributes = next_data
+
+        # Interpolate current point data to next points
+        interpolated_point_data = interpolate_features(current_points, current_point_data, next_points)
+        interpolated_point_data['theta'] = next_point_data['theta']
+        
+        # # Y values are directly the phi values from next points
+        # y_values = next_point_data['phi']
+
+        # Assuming interpolated_point_data and next_point_data are defined and contain 'phi'
+        y_values = np.round(interpolated_point_data['phi']) - np.round(next_point_data['phi'])
+        # Keeping only positive values
+        y_values = np.maximum(y_values, 0)
+        # Rounding to 1 decimal place
+        y_values = np.round(y_values, 1)
+        
+        # Create the graph data using next points, interpolated data, and attributes
+        data = create_graph_data(next_points, interpolated_point_data, next_edge_attributes, y_values)
+        graph_data_list.append(data)
+
+        progress_percent = (len(graph_data_list) / len(vtk_pairs)) * 100
+        print(f"Processing pair {len(graph_data_list)} of {len(vtk_pairs)} ({progress_percent:.2f}%) completed")
+
+    return graph_data_list
 
 def plot_graph_components_with_highlights(points, features, edges, edge_attr, y):
     """

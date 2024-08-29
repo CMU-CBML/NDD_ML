@@ -227,3 +227,231 @@ class ResidualGCN(torch.nn.Module):
         
         x = self.final_conv(x, edge_index)
         return x
+    
+class ConvolutionalAutoencoder(nn.Module):
+    def __init__(self):
+        super().__init__()
+        # Encoder
+        self.conv1 = torch.nnConv2d(3, 84, kernel_size=3, stride=2, padding=1)  # 200x200x3 -> 100x100x84
+        self.conv2 = torch.nnConv2d(84, 168, kernel_size=3, stride=2, padding=1) # 100x100x84 -> 50x50x168
+        self.conv3 = torch.nnConv2d(168, 336, kernel_size=3, stride=2, padding=1) # 50x50x168 -> 25x25x336
+        self.conv4 = torch.nnConv2d(336, 672, kernel_size=3, stride=2, padding=1) # 25x25x336 -> 12x12x672
+
+        # Decoder
+        self.t_conv1 = torch.nnConvTranspose2d(672, 336, kernel_size=3, stride=2, padding=1, output_padding=1)  # 12x12x672 -> 25x25x336
+        self.t_conv2 = torch.nnConvTranspose2d(336, 168, kernel_size=3, stride=2, padding=1, output_padding=1)  # 25x25x336 -> 50x50x168
+        self.t_conv3 = torch.nnConvTranspose2d(168, 84, kernel_size=3, stride=2, padding=1, output_padding=1)  # 50x50x168 -> 100x100x84
+        self.t_conv4 = torch.nnConvTranspose2d(84, 1, kernel_size=3, stride=2, padding=1, output_padding=1)  # 100x100x84 -> 200x200x1
+
+    def forward(self, x):
+        # Encoder
+        x = F.relu(self.conv1(x))
+        x = F.relu(self.conv2(x))
+        x = F.relu(self.conv3(x))
+        x = F.relu(self.conv4(x))
+
+        # Decoder
+        x = F.relu(self.t_conv1(x))
+        x = F.relu(self.t_conv2(x))
+        x = F.relu(self.t_conv3(x))
+        x = torch.sigmoid(self.t_conv4(x))
+
+        return x
+
+# def train():
+#     model.train()
+#     optimizer.zero_grad()
+#     out = model(data)
+#     loss = F.mse_loss(out[data.train_mask], data.y[data.train_mask].unsqueeze(1))  # Use MSE loss for continuous output
+#     loss.backward()
+    
+#     torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+#     optimizer.step()
+
+# @torch.no_grad()
+# def test():
+#     model.eval()
+#     out = model(data)  # Output shape: [num_nodes, 1]
+#     out = out.squeeze()  # Squeeze to match target shape [num_nodes]
+
+#     train_error = F.mse_loss(out[data.train_mask], data.y[data.train_mask]).item()
+#     test_error = F.mse_loss(out[data.test_mask], data.y[data.test_mask]).item()
+    
+#     return train_error, test_error
+
+
+def train():
+    model.train()
+    optimizer.zero_grad()
+
+    # Get the model output
+    out = model(data)
+
+    # Ensure the output is between 0 and 1 by applying a sigmoid, if not already included in the model
+    out_prob = torch.sigmoid(out[data.train_mask])
+
+    # Ensure the target labels are of the correct shape [num_nodes, 1] and type float
+    target = data.y[data.train_mask].unsqueeze(1).float()
+
+    # Use binary cross-entropy loss
+    loss = F.binary_cross_entropy(out_prob, target)
+
+    # Perform backpropagation and an optimization step
+    loss.backward()
+    torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+    optimizer.step()
+
+
+@torch.no_grad()
+def test():
+    model.eval()
+
+    # Get the model output
+    out = model(data)
+
+    # Ensure the output is between 0 and 1 by applying a sigmoid
+    out_prob = torch.sigmoid(out)
+
+    # Calculate binary cross-entropy loss for train and test sets
+    train_loss = F.binary_cross_entropy(out_prob[data.train_mask], data.y[data.train_mask].unsqueeze(1).float()).item()
+    test_loss = F.binary_cross_entropy(out_prob[data.test_mask], data.y[data.test_mask].unsqueeze(1).float()).item()
+
+    return train_loss, test_loss
+
+# from torch_geometric.data import Batch
+
+# def train():
+#     model.train()
+#     optimizer.zero_grad()
+
+#     # Assuming 'devices' and 'data' are properly defined
+#     data_list = [data.to(device) for device in devices]  # List of data objects for each GPU
+#     out = model(data_list)  # Model should handle parallel execution and gathering
+
+#     # Ensure outputs are gathered to a single device, typically cuda:0
+#     out_prob = torch.sigmoid(out)  # This should be on a single device after gather
+#     device = out_prob.device  # Device where the output is located
+
+#     # Gather targets to the same device as out_prob
+#     targets = torch.cat([d.y[d.train_mask].unsqueeze(1).float().to(device) for d in data_list])
+
+#     # Compute loss
+#     loss = F.binary_cross_entropy(out_prob, targets)
+#     loss.backward()
+#     optimizer.step()
+
+
+# @torch.no_grad()
+# def test():
+#     model.eval()
+
+#     # Get the model output
+#     out = model(data)
+
+#     # Apply sigmoid activation
+#     out_prob = torch.sigmoid(out)
+
+#     # Calculate binary cross-entropy loss for train and test sets
+#     train_loss = F.binary_cross_entropy(out_prob[data.train_mask], data.y[data.train_mask].unsqueeze(1).float()).item()
+#     test_loss = F.binary_cross_entropy(out_prob[data.test_mask], data.y[data.test_mask].unsqueeze(1).float()).item()
+
+#     return train_loss, test_loss
+
+
+
+
+
+
+
+# from torch_geometric.nn import GCNConv
+
+# class ResidualGCNBlock(torch.nn.Module):
+#     def __init__(self, in_channels, out_channels):
+#         super().__init__()
+#         self.conv1 = GCNConv(in_channels, out_channels)
+#         self.conv2 = GCNConv(out_channels, out_channels)
+#         if in_channels != out_channels:
+#             self.projection = torch.nn.Linear(in_channels, out_channels)
+#         else:
+#             self.projection = None
+
+#     def forward(self, x, edge_index):
+#         identity = x
+#         out = F.relu(self.conv1(x, edge_index))
+#         out = self.conv2(out, edge_index)
+        
+#         if self.projection is not None:
+#             identity = self.projection(identity)
+        
+#         out += identity  # Residual connection
+#         out = F.relu(out)
+#         return out
+
+# class ResidualGCN(torch.nn.Module):
+#     def __init__(self, in_channels, hidden_channels, out_channels, num_layers=3, dropout=0.5):
+#         super().__init__()
+#         self.initial_conv = GCNConv(in_channels, hidden_channels)
+#         self.res_blocks = torch.nn.ModuleList([ResidualGCNBlock(hidden_channels, hidden_channels) for _ in range(num_layers - 1)])
+#         self.final_conv = GCNConv(hidden_channels, out_channels)
+#         self.dropout = dropout
+
+#     def forward(self, data):
+#         x, edge_index = data.x, data.edge_index
+#         x = F.relu(self.initial_conv(x, edge_index))
+#         x = F.dropout(x, p=self.dropout, training=self.training)
+        
+#         for block in self.res_blocks:
+#             x = block(x, edge_index)
+#             x = F.dropout(x, p=self.dropout, training=self.training)
+        
+#         x = self.final_conv(x, edge_index)
+#         return x
+
+# def train(model, data, optimizer):
+#     model.train()
+#     optimizer.zero_grad()
+#     out = model(data)  # Shape should be [number of nodes, 1] for regression
+#     out = out[data.train_mask]  # Applying mask
+#     targets = data.y[data.train_mask].float()  # Ensure targets are float for MSE loss
+#     loss = F.mse_loss(out, targets)  # Use MSE loss for continuous output
+#     loss.backward()
+#     optimizer.step()
+#     return loss.item()
+
+# def accuracy(output, labels, threshold=0.1):
+#     """Calculate accuracy within a given threshold."""
+#     return (output.sub(labels).abs() < threshold).float().mean().item()
+
+# def evaluate(model, data):
+#     model.eval()
+#     with torch.no_grad():
+#         out = model(data).squeeze()  # Squeeze to remove extra dimension from output
+
+#         train_masked_out = out[data.train_mask]
+#         test_masked_out = out[data.test_mask]
+#         train_labels = data.y[data.train_mask].float()
+#         test_labels = data.y[data.test_mask].float()
+
+#         train_acc = accuracy(train_masked_out, train_labels)
+#         test_acc = accuracy(test_masked_out, test_labels)
+
+#         return train_acc, test_acc
+
+# # Setup for model training/testing
+# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+# model = ResidualGCN(data.num_node_features, 64, 1, num_layers=3).to(device)  # Assuming the output is 1 for regression
+# data = data.to(device)
+# optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
+
+# # Lists to store training and test accuracy for each epoch
+# train_acc_list = []
+# test_acc_list = []
+
+# # Example training loop
+# for epoch in range(1, 101):
+#     train_loss = train(model, data, optimizer)
+#     train_acc, test_acc = evaluate(model, data)
+#     train_acc_list.append(train_acc)
+#     test_acc_list.append(test_acc)
+#     print(f'Epoch {epoch}: Loss: {train_loss:.4f}, Train Acc: {train_acc:.4f}, Test Acc: {test_acc:.4f}')
+

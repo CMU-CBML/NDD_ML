@@ -1,0 +1,477 @@
++ module load anaconda3
+++ /usr/share/lmod/lmod/libexec/lmod bash load anaconda3
++ eval '__LMOD_REF_COUNT_ACLOCAL_PATH=/opt/packages/anaconda3-2022.10/share/aclocal:1;' export '__LMOD_REF_COUNT_ACLOCAL_PATH;' 'ACLOCAL_PATH=/opt/packages/anaconda3-2022.10/share/aclocal;' export 'ACLOCAL_PATH;' '__LMOD_REF_COUNT_CMAKE_PREFIX_PATH=/opt/packages/anaconda3-2022.10:1;' export '__LMOD_REF_COUNT_CMAKE_PREFIX_PATH;' 'CMAKE_PREFIX_PATH=/opt/packages/anaconda3-2022.10;' export 'CMAKE_PREFIX_PATH;' 'CONDA_PKGS_DIRS=\$HOME/.conda/pkgs/;' export 'CONDA_PKGS_DIRS;' '__LMOD_REF_COUNT_CPLUS_INCLUDE_PATH=/opt/packages/anaconda3-2022.10/include:1;' export '__LMOD_REF_COUNT_CPLUS_INCLUDE_PATH;' 'CPLUS_INCLUDE_PATH=/opt/packages/anaconda3-2022.10/include;' export 'CPLUS_INCLUDE_PATH;' '__LMOD_REF_COUNT_C_INCLUDE_PATH=/opt/packages/anaconda3-2022.10/include:1;' export '__LMOD_REF_COUNT_C_INCLUDE_PATH;' 'C_INCLUDE_PATH=/opt/packages/anaconda3-2022.10/include;' export 'C_INCLUDE_PATH;' '__LMOD_REF_COUNT_INCLUDE=/opt/packages/anaconda3-2022.10/include:1;' export '__LMOD_REF_COUNT_INCLUDE;' 'INCLUDE=/opt/packages/anaconda3-2022.10/include;' export 'INCLUDE;' '__LMOD_REF_COUNT_LOADEDMODULES=allocations/1.0:1\;psc.allocations.user/1.0:1\;openmpi/4.0.5-nvhpc21.2:1\;anaconda3/2022.10:1;' export '__LMOD_REF_COUNT_LOADEDMODULES;' 'LOADEDMODULES=allocations/1.0:psc.allocations.user/1.0:openmpi/4.0.5-nvhpc21.2:anaconda3/2022.10;' export 'LOADEDMODULES;' '__LMOD_REF_COUNT_MANPATH=/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/compilers/man:1\;/usr/share/lmod/lmod/share/man:1\;/opt/puppetlabs/puppet/share/man:1\;/opt/packages/anaconda3-2022.10/man:1\;/opt/packages/anaconda3-2022.10/share/man:1;' export '__LMOD_REF_COUNT_MANPATH;' 'MANPATH=/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/compilers/man:/usr/share/lmod/lmod/share/man::/opt/puppetlabs/puppet/share/man:/opt/packages/anaconda3-2022.10/man:/opt/packages/anaconda3-2022.10/share/man;' export 'MANPATH;' 'MODULEPATH=/etc/scl/modulefiles:/opt/modulefiles/production:/opt/modulefiles/preproduction:/opt/modulefiles/deprecated:/usr/share/modulefiles:/usr/share/modulefiles/Linux:/usr/share/modulefiles/Core:/usr/share/lmod/lmod/modulefiles/Core;' export 'MODULEPATH;' '__LMOD_REF_COUNT_PATH=/opt/packages/anaconda3-2022.10/bin:2\;/opt/packages/anaconda3-2022.10/condabin:2\;/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/comm_libs/mpi/bin:1\;/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/compilers/bin:1\;/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/cuda/bin:1\;/opt/packages/psc.allocations.user/bin:1\;/opt/packages/allocations/bin:1\;/usr/local/bin:1\;/usr/bin:1\;/usr/local/sbin:1\;/usr/sbin:1\;/opt/packages/interact/bin:1\;/opt/puppetlabs/bin:1\;.:1;' export '__LMOD_REF_COUNT_PATH;' 'PATH=/opt/packages/anaconda3-2022.10/bin:/opt/packages/anaconda3-2022.10/condabin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/comm_libs/mpi/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/compilers/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/cuda/bin:/opt/packages/psc.allocations.user/bin:/opt/packages/allocations/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/packages/interact/bin:/opt/puppetlabs/bin:.;' export 'PATH;' '__LMOD_REF_COUNT_PKG_CONFIG_PATH=/opt/packages/anaconda3-2022.10/lib/pkgconfig:1;' export '__LMOD_REF_COUNT_PKG_CONFIG_PATH;' 'PKG_CONFIG_PATH=/opt/packages/anaconda3-2022.10/lib/pkgconfig;' export 'PKG_CONFIG_PATH;' '__LMOD_REF_COUNT__LMFILES_=/opt/modulefiles/production/allocations/1.0.lua:1\;/opt/modulefiles/production/psc.allocations.user/1.0.lua:1\;/opt/modulefiles/production/openmpi/4.0.5-nvhpc21.2:1\;/opt/modulefiles/production/anaconda3/2022.10.lua:1;' export '__LMOD_REF_COUNT__LMFILES_;' '_LMFILES_=/opt/modulefiles/production/allocations/1.0.lua:/opt/modulefiles/production/psc.allocations.user/1.0.lua:/opt/modulefiles/production/openmpi/4.0.5-nvhpc21.2:/opt/modulefiles/production/anaconda3/2022.10.lua;' export '_LMFILES_;' '_ModuleTable001_=X01vZHVsZVRhYmxlXz17WyJNVHZlcnNpb24iXT0zLFsiY19yZWJ1aWxkVGltZSJdPWZhbHNlLFsiY19zaG9ydFRpbWUiXT1mYWxzZSxkZXB0aFQ9e30sZmFtaWx5PXt9LG1UPXthbGxvY2F0aW9ucz17WyJmbiJdPSIvb3B0L21vZHVsZWZpbGVzL3Byb2R1Y3Rpb24vYWxsb2NhdGlvbnMvMS4wLmx1YSIsWyJmdWxsTmFtZSJdPSJhbGxvY2F0aW9ucy8xLjAiLFsibG9hZE9yZGVyIl09MSxwcm9wVD17fSxbInN0YWNrRGVwdGgiXT0wLFsic3RhdHVzIl09ImFjdGl2ZSIsWyJ1c2VyTmFtZSJdPSJhbGxvY2F0aW9ucyIsfSxhbmFjb25kYTM9e1siZm4iXT0iL29wdC9tb2R1bGVmaWxlcy9wcm9kdWN0aW9uL2FuYWNvbmRhMy8yMDIyLjEwLmx1YSIsWyJmdWxsTmFtZSJdPSJhbmFjb25k;' export '_ModuleTable001_;' '_ModuleTable002_=YTMvMjAyMi4xMCIsWyJsb2FkT3JkZXIiXT00LHByb3BUPXt9LFsic3RhY2tEZXB0aCJdPTAsWyJzdGF0dXMiXT0iYWN0aXZlIixbInVzZXJOYW1lIl09ImFuYWNvbmRhMyIsfSxvcGVubXBpPXtbImZuIl09Ii9vcHQvbW9kdWxlZmlsZXMvcHJvZHVjdGlvbi9vcGVubXBpLzQuMC41LW52aHBjMjEuMiIsWyJmdWxsTmFtZSJdPSJvcGVubXBpLzQuMC41LW52aHBjMjEuMiIsWyJsb2FkT3JkZXIiXT0zLHByb3BUPXt9LFsic3RhY2tEZXB0aCJdPTAsWyJzdGF0dXMiXT0iYWN0aXZlIixbInVzZXJOYW1lIl09Im9wZW5tcGkvNC4wLjUtbnZocGMyMS4yIix9LFsicHNjLmFsbG9jYXRpb25zLnVzZXIiXT17WyJmbiJdPSIvb3B0L21vZHVsZWZpbGVzL3Byb2R1Y3Rpb24vcHNjLmFsbG9j;' export '_ModuleTable002_;' '_ModuleTable003_=YXRpb25zLnVzZXIvMS4wLmx1YSIsWyJmdWxsTmFtZSJdPSJwc2MuYWxsb2NhdGlvbnMudXNlci8xLjAiLFsibG9hZE9yZGVyIl09Mixwcm9wVD17fSxbInN0YWNrRGVwdGgiXT0wLFsic3RhdHVzIl09ImFjdGl2ZSIsWyJ1c2VyTmFtZSJdPSJwc2MuYWxsb2NhdGlvbnMudXNlciIsfSx9LG1wYXRoQT17Ii9ldGMvc2NsL21vZHVsZWZpbGVzIiwiL29wdC9tb2R1bGVmaWxlcy9wcm9kdWN0aW9uIiwiL29wdC9tb2R1bGVmaWxlcy9wcmVwcm9kdWN0aW9uIiwiL29wdC9tb2R1bGVmaWxlcy9kZXByZWNhdGVkIiwiL3Vzci9zaGFyZS9tb2R1bGVmaWxlcyIsIi91c3Ivc2hhcmUvbW9kdWxlZmlsZXMvTGludXgiLCIvdXNyL3NoYXJlL21vZHVsZWZpbGVzL0NvcmUiLCIvdXNyL3NoYXJl;' export '_ModuleTable003_;' '_ModuleTable004_=L2xtb2QvbG1vZC9tb2R1bGVmaWxlcy9Db3JlIix9LFsic3lzdGVtQmFzZU1QQVRIIl09Ii9ldGMvc2NsL21vZHVsZWZpbGVzOi9vcHQvbW9kdWxlZmlsZXMvcHJvZHVjdGlvbjovb3B0L21vZHVsZWZpbGVzL3ByZXByb2R1Y3Rpb246L29wdC9tb2R1bGVmaWxlcy9kZXByZWNhdGVkOi91c3Ivc2hhcmUvbW9kdWxlZmlsZXM6L3Vzci9zaGFyZS9tb2R1bGVmaWxlcy9MaW51eDovdXNyL3NoYXJlL21vZHVsZWZpbGVzL0NvcmU6L3Vzci9zaGFyZS9sbW9kL2xtb2QvbW9kdWxlZmlsZXMvQ29yZSIsfQ==;' export '_ModuleTable004_;' '_ModuleTable_Sz_=4;' export '_ModuleTable_Sz_;' '__LMOD_STACK_CONDA_PKGS_DIRS=JEhPTUUvLmNvbmRhL3BrZ3Mv;' export '__LMOD_STACK_CONDA_PKGS_DIRS;' source '/opt/packages/anaconda3-2022.10/etc/profile.d/conda.sh;' conda 'activate;'
+++ __LMOD_REF_COUNT_ACLOCAL_PATH=/opt/packages/anaconda3-2022.10/share/aclocal:1
+++ export __LMOD_REF_COUNT_ACLOCAL_PATH
+++ ACLOCAL_PATH=/opt/packages/anaconda3-2022.10/share/aclocal
+++ export ACLOCAL_PATH
+++ __LMOD_REF_COUNT_CMAKE_PREFIX_PATH=/opt/packages/anaconda3-2022.10:1
+++ export __LMOD_REF_COUNT_CMAKE_PREFIX_PATH
+++ CMAKE_PREFIX_PATH=/opt/packages/anaconda3-2022.10
+++ export CMAKE_PREFIX_PATH
+++ CONDA_PKGS_DIRS='$HOME/.conda/pkgs/'
+++ export CONDA_PKGS_DIRS
+++ __LMOD_REF_COUNT_CPLUS_INCLUDE_PATH=/opt/packages/anaconda3-2022.10/include:1
+++ export __LMOD_REF_COUNT_CPLUS_INCLUDE_PATH
+++ CPLUS_INCLUDE_PATH=/opt/packages/anaconda3-2022.10/include
+++ export CPLUS_INCLUDE_PATH
+++ __LMOD_REF_COUNT_C_INCLUDE_PATH=/opt/packages/anaconda3-2022.10/include:1
+++ export __LMOD_REF_COUNT_C_INCLUDE_PATH
+++ C_INCLUDE_PATH=/opt/packages/anaconda3-2022.10/include
+++ export C_INCLUDE_PATH
+++ __LMOD_REF_COUNT_INCLUDE=/opt/packages/anaconda3-2022.10/include:1
+++ export __LMOD_REF_COUNT_INCLUDE
+++ INCLUDE=/opt/packages/anaconda3-2022.10/include
+++ export INCLUDE
+++ __LMOD_REF_COUNT_LOADEDMODULES='allocations/1.0:1;psc.allocations.user/1.0:1;openmpi/4.0.5-nvhpc21.2:1;anaconda3/2022.10:1'
+++ export __LMOD_REF_COUNT_LOADEDMODULES
+++ LOADEDMODULES=allocations/1.0:psc.allocations.user/1.0:openmpi/4.0.5-nvhpc21.2:anaconda3/2022.10
+++ export LOADEDMODULES
+++ __LMOD_REF_COUNT_MANPATH='/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/compilers/man:1;/usr/share/lmod/lmod/share/man:1;/opt/puppetlabs/puppet/share/man:1;/opt/packages/anaconda3-2022.10/man:1;/opt/packages/anaconda3-2022.10/share/man:1'
+++ export __LMOD_REF_COUNT_MANPATH
+++ MANPATH=/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/compilers/man:/usr/share/lmod/lmod/share/man::/opt/puppetlabs/puppet/share/man:/opt/packages/anaconda3-2022.10/man:/opt/packages/anaconda3-2022.10/share/man
+++ export MANPATH
+++ MODULEPATH=/etc/scl/modulefiles:/opt/modulefiles/production:/opt/modulefiles/preproduction:/opt/modulefiles/deprecated:/usr/share/modulefiles:/usr/share/modulefiles/Linux:/usr/share/modulefiles/Core:/usr/share/lmod/lmod/modulefiles/Core
+++ export MODULEPATH
+++ __LMOD_REF_COUNT_PATH='/opt/packages/anaconda3-2022.10/bin:2;/opt/packages/anaconda3-2022.10/condabin:2;/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/comm_libs/mpi/bin:1;/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/compilers/bin:1;/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/cuda/bin:1;/opt/packages/psc.allocations.user/bin:1;/opt/packages/allocations/bin:1;/usr/local/bin:1;/usr/bin:1;/usr/local/sbin:1;/usr/sbin:1;/opt/packages/interact/bin:1;/opt/puppetlabs/bin:1;.:1'
+++ export __LMOD_REF_COUNT_PATH
+++ PATH=/opt/packages/anaconda3-2022.10/bin:/opt/packages/anaconda3-2022.10/condabin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/comm_libs/mpi/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/compilers/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/cuda/bin:/opt/packages/psc.allocations.user/bin:/opt/packages/allocations/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/packages/interact/bin:/opt/puppetlabs/bin:.
+++ export PATH
+++ __LMOD_REF_COUNT_PKG_CONFIG_PATH=/opt/packages/anaconda3-2022.10/lib/pkgconfig:1
+++ export __LMOD_REF_COUNT_PKG_CONFIG_PATH
+++ PKG_CONFIG_PATH=/opt/packages/anaconda3-2022.10/lib/pkgconfig
+++ export PKG_CONFIG_PATH
+++ __LMOD_REF_COUNT__LMFILES_='/opt/modulefiles/production/allocations/1.0.lua:1;/opt/modulefiles/production/psc.allocations.user/1.0.lua:1;/opt/modulefiles/production/openmpi/4.0.5-nvhpc21.2:1;/opt/modulefiles/production/anaconda3/2022.10.lua:1'
+++ export __LMOD_REF_COUNT__LMFILES_
+++ _LMFILES_=/opt/modulefiles/production/allocations/1.0.lua:/opt/modulefiles/production/psc.allocations.user/1.0.lua:/opt/modulefiles/production/openmpi/4.0.5-nvhpc21.2:/opt/modulefiles/production/anaconda3/2022.10.lua
+++ export _LMFILES_
+++ _ModuleTable001_=X01vZHVsZVRhYmxlXz17WyJNVHZlcnNpb24iXT0zLFsiY19yZWJ1aWxkVGltZSJdPWZhbHNlLFsiY19zaG9ydFRpbWUiXT1mYWxzZSxkZXB0aFQ9e30sZmFtaWx5PXt9LG1UPXthbGxvY2F0aW9ucz17WyJmbiJdPSIvb3B0L21vZHVsZWZpbGVzL3Byb2R1Y3Rpb24vYWxsb2NhdGlvbnMvMS4wLmx1YSIsWyJmdWxsTmFtZSJdPSJhbGxvY2F0aW9ucy8xLjAiLFsibG9hZE9yZGVyIl09MSxwcm9wVD17fSxbInN0YWNrRGVwdGgiXT0wLFsic3RhdHVzIl09ImFjdGl2ZSIsWyJ1c2VyTmFtZSJdPSJhbGxvY2F0aW9ucyIsfSxhbmFjb25kYTM9e1siZm4iXT0iL29wdC9tb2R1bGVmaWxlcy9wcm9kdWN0aW9uL2FuYWNvbmRhMy8yMDIyLjEwLmx1YSIsWyJmdWxsTmFtZSJdPSJhbmFjb25k
+++ export _ModuleTable001_
+++ _ModuleTable002_=YTMvMjAyMi4xMCIsWyJsb2FkT3JkZXIiXT00LHByb3BUPXt9LFsic3RhY2tEZXB0aCJdPTAsWyJzdGF0dXMiXT0iYWN0aXZlIixbInVzZXJOYW1lIl09ImFuYWNvbmRhMyIsfSxvcGVubXBpPXtbImZuIl09Ii9vcHQvbW9kdWxlZmlsZXMvcHJvZHVjdGlvbi9vcGVubXBpLzQuMC41LW52aHBjMjEuMiIsWyJmdWxsTmFtZSJdPSJvcGVubXBpLzQuMC41LW52aHBjMjEuMiIsWyJsb2FkT3JkZXIiXT0zLHByb3BUPXt9LFsic3RhY2tEZXB0aCJdPTAsWyJzdGF0dXMiXT0iYWN0aXZlIixbInVzZXJOYW1lIl09Im9wZW5tcGkvNC4wLjUtbnZocGMyMS4yIix9LFsicHNjLmFsbG9jYXRpb25zLnVzZXIiXT17WyJmbiJdPSIvb3B0L21vZHVsZWZpbGVzL3Byb2R1Y3Rpb24vcHNjLmFsbG9j
+++ export _ModuleTable002_
+++ _ModuleTable003_=YXRpb25zLnVzZXIvMS4wLmx1YSIsWyJmdWxsTmFtZSJdPSJwc2MuYWxsb2NhdGlvbnMudXNlci8xLjAiLFsibG9hZE9yZGVyIl09Mixwcm9wVD17fSxbInN0YWNrRGVwdGgiXT0wLFsic3RhdHVzIl09ImFjdGl2ZSIsWyJ1c2VyTmFtZSJdPSJwc2MuYWxsb2NhdGlvbnMudXNlciIsfSx9LG1wYXRoQT17Ii9ldGMvc2NsL21vZHVsZWZpbGVzIiwiL29wdC9tb2R1bGVmaWxlcy9wcm9kdWN0aW9uIiwiL29wdC9tb2R1bGVmaWxlcy9wcmVwcm9kdWN0aW9uIiwiL29wdC9tb2R1bGVmaWxlcy9kZXByZWNhdGVkIiwiL3Vzci9zaGFyZS9tb2R1bGVmaWxlcyIsIi91c3Ivc2hhcmUvbW9kdWxlZmlsZXMvTGludXgiLCIvdXNyL3NoYXJlL21vZHVsZWZpbGVzL0NvcmUiLCIvdXNyL3NoYXJl
+++ export _ModuleTable003_
+++ _ModuleTable004_=L2xtb2QvbG1vZC9tb2R1bGVmaWxlcy9Db3JlIix9LFsic3lzdGVtQmFzZU1QQVRIIl09Ii9ldGMvc2NsL21vZHVsZWZpbGVzOi9vcHQvbW9kdWxlZmlsZXMvcHJvZHVjdGlvbjovb3B0L21vZHVsZWZpbGVzL3ByZXByb2R1Y3Rpb246L29wdC9tb2R1bGVmaWxlcy9kZXByZWNhdGVkOi91c3Ivc2hhcmUvbW9kdWxlZmlsZXM6L3Vzci9zaGFyZS9tb2R1bGVmaWxlcy9MaW51eDovdXNyL3NoYXJlL21vZHVsZWZpbGVzL0NvcmU6L3Vzci9zaGFyZS9sbW9kL2xtb2QvbW9kdWxlZmlsZXMvQ29yZSIsfQ==
+++ export _ModuleTable004_
+++ _ModuleTable_Sz_=4
+++ export _ModuleTable_Sz_
+++ __LMOD_STACK_CONDA_PKGS_DIRS=JEhPTUUvLmNvbmRhL3BrZ3Mv
+++ export __LMOD_STACK_CONDA_PKGS_DIRS
+++ source /opt/packages/anaconda3-2022.10/etc/profile.d/conda.sh
++++ export CONDA_EXE=/opt/packages/anaconda3-2022.10/bin/conda
++++ CONDA_EXE=/opt/packages/anaconda3-2022.10/bin/conda
++++ export _CE_M=
++++ _CE_M=
++++ export _CE_CONDA=
++++ _CE_CONDA=
++++ export CONDA_PYTHON_EXE=/opt/packages/anaconda3-2022.10/bin/python
++++ CONDA_PYTHON_EXE=/opt/packages/anaconda3-2022.10/bin/python
++++ '[' -z x ']'
+++ conda activate
+++ local cmd=activate
+++ case "$cmd" in
+++ __conda_activate activate
+++ '[' -n '' ']'
+++ local ask_conda
++++ PS1=
++++ __conda_exe shell.posix activate
++++ /opt/packages/anaconda3-2022.10/bin/conda shell.posix activate
+++ ask_conda='. "/opt/packages/anaconda3-2022.10/etc/conda/deactivate.d/udunits2-deactivate.sh"
+. "/opt/packages/anaconda3-2022.10/etc/conda/deactivate.d/proj4-deactivate.sh"
+PS1='\''(base) '\''
+export PATH='\''/opt/packages/anaconda3-2022.10/bin:/opt/packages/anaconda3-2022.10/condabin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/comm_libs/mpi/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/compilers/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/cuda/bin:/opt/packages/psc.allocations.user/bin:/opt/packages/allocations/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/packages/interact/bin:/opt/puppetlabs/bin:.'\''
+export CONDA_SHLVL='\''1'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\''
+. "/opt/packages/anaconda3-2022.10/etc/conda/activate.d/proj4-activate.sh"
+. "/opt/packages/anaconda3-2022.10/etc/conda/activate.d/udunits2-activate.sh"'
+++ eval '. "/opt/packages/anaconda3-2022.10/etc/conda/deactivate.d/udunits2-deactivate.sh"
+. "/opt/packages/anaconda3-2022.10/etc/conda/deactivate.d/proj4-deactivate.sh"
+PS1='\''(base) '\''
+export PATH='\''/opt/packages/anaconda3-2022.10/bin:/opt/packages/anaconda3-2022.10/condabin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/comm_libs/mpi/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/compilers/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/cuda/bin:/opt/packages/psc.allocations.user/bin:/opt/packages/allocations/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/packages/interact/bin:/opt/puppetlabs/bin:.'\''
+export CONDA_SHLVL='\''1'\''
+export CONDA_PROMPT_MODIFIER='\''(base) '\''
+. "/opt/packages/anaconda3-2022.10/etc/conda/activate.d/proj4-activate.sh"
+. "/opt/packages/anaconda3-2022.10/etc/conda/activate.d/udunits2-activate.sh"'
++++ . /opt/packages/anaconda3-2022.10/etc/conda/deactivate.d/udunits2-deactivate.sh
+++++ unset UDUNITS2_XML_PATH
+++++ [[ -n '' ]]
++++ . /opt/packages/anaconda3-2022.10/etc/conda/deactivate.d/proj4-deactivate.sh
+++++ unset PROJ_LIB
+++++ unset PROJ_NETWORK
+++++ '[' -n '' ']'
++++ PS1='(base) '
++++ export PATH=/opt/packages/anaconda3-2022.10/bin:/opt/packages/anaconda3-2022.10/condabin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/comm_libs/mpi/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/compilers/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/cuda/bin:/opt/packages/psc.allocations.user/bin:/opt/packages/allocations/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/packages/interact/bin:/opt/puppetlabs/bin:.
++++ PATH=/opt/packages/anaconda3-2022.10/bin:/opt/packages/anaconda3-2022.10/condabin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/comm_libs/mpi/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/compilers/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/cuda/bin:/opt/packages/psc.allocations.user/bin:/opt/packages/allocations/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/packages/interact/bin:/opt/puppetlabs/bin:.
++++ export CONDA_SHLVL=1
++++ CONDA_SHLVL=1
++++ export 'CONDA_PROMPT_MODIFIER=(base) '
++++ CONDA_PROMPT_MODIFIER='(base) '
++++ . /opt/packages/anaconda3-2022.10/etc/conda/activate.d/proj4-activate.sh
+++++ '[' -n '' ']'
+++++ '[' -d /opt/packages/anaconda3-2022.10/share/proj ']'
+++++ export PROJ_LIB=/opt/packages/anaconda3-2022.10/share/proj
+++++ PROJ_LIB=/opt/packages/anaconda3-2022.10/share/proj
+++++ '[' -f /opt/packages/anaconda3-2022.10/share/proj/copyright_and_licenses.csv ']'
+++++ export PROJ_NETWORK=ON
+++++ PROJ_NETWORK=ON
++++ . /opt/packages/anaconda3-2022.10/etc/conda/activate.d/udunits2-activate.sh
+++++ [[ -n '' ]]
+++++ '[' -d /opt/packages/anaconda3-2022.10/share/udunits ']'
+++++ export UDUNITS2_XML_PATH=/opt/packages/anaconda3-2022.10/share/udunits/udunits2.xml
+++++ UDUNITS2_XML_PATH=/opt/packages/anaconda3-2022.10/share/udunits/udunits2.xml
+++ __conda_hashr
+++ '[' -n '' ']'
+++ '[' -n '' ']'
+++ hash -r
+++ : -s sh
++ eval
++ ret=0
++ /usr/share/lmod/8.2.7/libexec/log_modules load anaconda3
++ return 0
++ conda activate pyg
++ local cmd=activate
++ case "$cmd" in
++ __conda_activate activate pyg
++ '[' -n '' ']'
++ local ask_conda
+++ PS1='(base) '
+++ __conda_exe shell.posix activate pyg
+++ /opt/packages/anaconda3-2022.10/bin/conda shell.posix activate pyg
++ ask_conda='. "/opt/packages/anaconda3-2022.10/etc/conda/deactivate.d/udunits2-deactivate.sh"
+. "/opt/packages/anaconda3-2022.10/etc/conda/deactivate.d/proj4-deactivate.sh"
+PS1='\''(pyg) '\''
+export PATH='\''/jet/home/ussqww/.conda/envs/pyg/bin:/opt/packages/anaconda3-2022.10/condabin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/comm_libs/mpi/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/compilers/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/cuda/bin:/opt/packages/psc.allocations.user/bin:/opt/packages/allocations/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/packages/interact/bin:/opt/puppetlabs/bin:.'\''
+export CONDA_PREFIX='\''/jet/home/ussqww/.conda/envs/pyg'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_DEFAULT_ENV='\''pyg'\''
+export CONDA_PROMPT_MODIFIER='\''(pyg) '\''
+export CONDA_PREFIX_1='\''/opt/packages/anaconda3-2022.10'\''
+export CONDA_EXE='\''/opt/packages/anaconda3-2022.10/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/opt/packages/anaconda3-2022.10/bin/python'\''
+. "/jet/home/ussqww/.conda/envs/pyg/etc/conda/activate.d/libglib_activate.sh"'
++ eval '. "/opt/packages/anaconda3-2022.10/etc/conda/deactivate.d/udunits2-deactivate.sh"
+. "/opt/packages/anaconda3-2022.10/etc/conda/deactivate.d/proj4-deactivate.sh"
+PS1='\''(pyg) '\''
+export PATH='\''/jet/home/ussqww/.conda/envs/pyg/bin:/opt/packages/anaconda3-2022.10/condabin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/comm_libs/mpi/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/compilers/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/cuda/bin:/opt/packages/psc.allocations.user/bin:/opt/packages/allocations/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/packages/interact/bin:/opt/puppetlabs/bin:.'\''
+export CONDA_PREFIX='\''/jet/home/ussqww/.conda/envs/pyg'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_DEFAULT_ENV='\''pyg'\''
+export CONDA_PROMPT_MODIFIER='\''(pyg) '\''
+export CONDA_PREFIX_1='\''/opt/packages/anaconda3-2022.10'\''
+export CONDA_EXE='\''/opt/packages/anaconda3-2022.10/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/opt/packages/anaconda3-2022.10/bin/python'\''
+. "/jet/home/ussqww/.conda/envs/pyg/etc/conda/activate.d/libglib_activate.sh"'
+++ . /opt/packages/anaconda3-2022.10/etc/conda/deactivate.d/udunits2-deactivate.sh
++++ unset UDUNITS2_XML_PATH
++++ [[ -n '' ]]
+++ . /opt/packages/anaconda3-2022.10/etc/conda/deactivate.d/proj4-deactivate.sh
++++ unset PROJ_LIB
++++ unset PROJ_NETWORK
++++ '[' -n '' ']'
+++ PS1='(pyg) '
+++ export PATH=/jet/home/ussqww/.conda/envs/pyg/bin:/opt/packages/anaconda3-2022.10/condabin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/comm_libs/mpi/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/compilers/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/cuda/bin:/opt/packages/psc.allocations.user/bin:/opt/packages/allocations/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/packages/interact/bin:/opt/puppetlabs/bin:.
+++ PATH=/jet/home/ussqww/.conda/envs/pyg/bin:/opt/packages/anaconda3-2022.10/condabin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/comm_libs/mpi/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/compilers/bin:/opt/packages/pgi/21.2-cuda11.1/Linux_x86_64/21.2/cuda/bin:/opt/packages/psc.allocations.user/bin:/opt/packages/allocations/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/packages/interact/bin:/opt/puppetlabs/bin:.
+++ export CONDA_PREFIX=/jet/home/ussqww/.conda/envs/pyg
+++ CONDA_PREFIX=/jet/home/ussqww/.conda/envs/pyg
+++ export CONDA_SHLVL=2
+++ CONDA_SHLVL=2
+++ export CONDA_DEFAULT_ENV=pyg
+++ CONDA_DEFAULT_ENV=pyg
+++ export 'CONDA_PROMPT_MODIFIER=(pyg) '
+++ CONDA_PROMPT_MODIFIER='(pyg) '
+++ export CONDA_PREFIX_1=/opt/packages/anaconda3-2022.10
+++ CONDA_PREFIX_1=/opt/packages/anaconda3-2022.10
+++ export CONDA_EXE=/opt/packages/anaconda3-2022.10/bin/conda
+++ CONDA_EXE=/opt/packages/anaconda3-2022.10/bin/conda
+++ export _CE_M=
+++ _CE_M=
+++ export _CE_CONDA=
+++ _CE_CONDA=
+++ export CONDA_PYTHON_EXE=/opt/packages/anaconda3-2022.10/bin/python
+++ CONDA_PYTHON_EXE=/opt/packages/anaconda3-2022.10/bin/python
+++ . /jet/home/ussqww/.conda/envs/pyg/etc/conda/activate.d/libglib_activate.sh
++++ export GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
++++ GSETTINGS_SCHEMA_DIR_CONDA_BACKUP=
++++ export GSETTINGS_SCHEMA_DIR=/jet/home/ussqww/.conda/envs/pyg/share/glib-2.0/schemas
++++ GSETTINGS_SCHEMA_DIR=/jet/home/ussqww/.conda/envs/pyg/share/glib-2.0/schemas
++ __conda_hashr
++ '[' -n '' ']'
++ '[' -n '' ']'
++ hash -r
++ python /ocean/projects/eng170006p/ussqww/NDD_ML-main/Multi-gpu_test.py
+/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/site-packages/torch_geometric/typing.py:54: UserWarning: An issue occurred while importing 'pyg-lib'. Disabling its usage. Stacktrace: /lib64/libm.so.6: version `GLIBC_2.29' not found (required by /ocean/projects/eng170006p/ussqww/.conda/envs/pyg/lib/python3.12/site-packages/libpyg.so)
+  warnings.warn(f"An issue occurred while importing 'pyg-lib'. "
+/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/site-packages/torch_geometric/typing.py:110: UserWarning: An issue occurred while importing 'torch-sparse'. Disabling its usage. Stacktrace: /lib64/libm.so.6: version `GLIBC_2.29' not found (required by /ocean/projects/eng170006p/ussqww/.conda/envs/pyg/lib/python3.12/site-packages/libpyg.so)
+  warnings.warn(f"An issue occurred while importing 'torch-sparse'. "
+Using devices: ['cuda:0', 'cuda:1']
+Reading physics_allparticle_000000.vtk... (0.07%)
+Reading physics_allparticle_002000.vtk... (1.39%)
+Reading physics_allparticle_004000.vtk... (2.71%)
+Reading physics_allparticle_006000.vtk... (4.03%)
+Reading physics_allparticle_008000.vtk... (5.35%)
+Reading physics_allparticle_010000.vtk... (6.68%)
+Reading physics_allparticle_012000.vtk... (8.00%)
+Reading physics_allparticle_014000.vtk... (9.32%)
+Reading physics_allparticle_016000.vtk... (10.64%)
+Reading physics_allparticle_018000.vtk... (11.96%)
+Reading physics_allparticle_020000.vtk... (13.28%)
+Processing dataset 1/10 (10.00%) completed
+Processing dataset 2/10 (20.00%) completed
+Processing dataset 3/10 (30.00%) completed
+Processing dataset 4/10 (40.00%) completed
+Processing dataset 5/10 (50.00%) completed
+Processing dataset 6/10 (60.00%) completed
+Processing dataset 7/10 (70.00%) completed
+Processing dataset 8/10 (80.00%) completed
+Processing dataset 9/10 (90.00%) completed
+Processing dataset 10/10 (100.00%) completed
+Combined Graph Data:
+Data(x=[155537, 7], edge_index=[2, 3020533], edge_attr=[3020533, 2], y=[155537])
+Before removing nodes based on phi values
+Data(x=[155537, 7], edge_index=[2, 3020533], edge_attr=[3020533, 2], y=[155537])
+After removing nodes based on phi values
+Data(x=[59505, 7], edge_index=[2, 1934684], edge_attr=[1934684, 2], y=[59505])
+Before removing NaN and Inf nodes
+Data(x=[59505, 7], edge_index=[2, 1934684], edge_attr=[1934684, 2], y=[59505])
+NaNs or Infs in node features: 0 found.
+NaNs or Infs in labels: 0 found.
+No NaNs or Infs detected in the nodes.
+After removing NaN and Inf nodes
+Data(x=[59505, 7], edge_index=[2, 1934684], edge_attr=[1934684, 2], y=[59505])
+Data(x=[59505, 7], edge_index=[2, 1934684], edge_attr=[1934684, 2], y=[59505], train_mask=[59505], test_mask=[59505], val_mask=[59505], num_classes=2)
+tensor([-6.0000e+00,  6.0000e+00, -1.3785e-02, -5.3928e-02, -9.0938e-12,
+        -1.3889e-01,  1.5106e-01])
+tensor([200.0000, 206.0000,   1.0617,   1.3702,   0.9028,   2.2222,   0.9250])
+tensor([206.0000, 200.0000,   1.0755,   1.4242,   0.9028,   2.3611,   0.7739])
+tensor([ 0., -5.])
+tensor([6., 5.])
+tensor([ 6., 10.])
+tensor(0.)
+tensor(1.)
+tensor(1.)
+Data(x=[59505, 7], edge_index=[2, 1934684], edge_attr=[1934684, 2], y=[59505], train_mask=[59505], test_mask=[59505], val_mask=[59505], num_classes=2)
+Data(x=[59505, 7], edge_index=[2, 1934684], edge_attr=[1934684, 2], y=[59505], train_mask=[59505], test_mask=[59505], val_mask=[59505], num_classes=2)
+Testing trainning starting ................................................................
+
+/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/site-packages/torch_geometric/typing.py:54: UserWarning: An issue occurred while importing 'pyg-lib'. Disabling its usage. Stacktrace: /lib64/libm.so.6: version `GLIBC_2.29' not found (required by /ocean/projects/eng170006p/ussqww/.conda/envs/pyg/lib/python3.12/site-packages/libpyg.so)
+  warnings.warn(f"An issue occurred while importing 'pyg-lib'. "
+/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/site-packages/torch_geometric/typing.py:54: UserWarning: An issue occurred while importing 'pyg-lib'. Disabling its usage. Stacktrace: /lib64/libm.so.6: version `GLIBC_2.29' not found (required by /ocean/projects/eng170006p/ussqww/.conda/envs/pyg/lib/python3.12/site-packages/libpyg.so)
+  warnings.warn(f"An issue occurred while importing 'pyg-lib'. "
+/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/site-packages/torch_geometric/typing.py:110: UserWarning: An issue occurred while importing 'torch-sparse'. Disabling its usage. Stacktrace: /lib64/libm.so.6: version `GLIBC_2.29' not found (required by /ocean/projects/eng170006p/ussqww/.conda/envs/pyg/lib/python3.12/site-packages/libpyg.so)
+  warnings.warn(f"An issue occurred while importing 'torch-sparse'. "
+/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/site-packages/torch_geometric/typing.py:110: UserWarning: An issue occurred while importing 'torch-sparse'. Disabling its usage. Stacktrace: /lib64/libm.so.6: version `GLIBC_2.29' not found (required by /ocean/projects/eng170006p/ussqww/.conda/envs/pyg/lib/python3.12/site-packages/libpyg.so)
+  warnings.warn(f"An issue occurred while importing 'torch-sparse'. "
+Using devices: ['cuda:0', 'cuda:1']
+Reading physics_allparticle_000000.vtk... (0.07%)
+Reading physics_allparticle_002000.vtk... (1.39%)
+Reading physics_allparticle_004000.vtk... (2.71%)
+Reading physics_allparticle_006000.vtk... (4.03%)
+Reading physics_allparticle_008000.vtk... (5.35%)
+Reading physics_allparticle_010000.vtk... (6.68%)
+Reading physics_allparticle_012000.vtk... (8.00%)
+Reading physics_allparticle_014000.vtk... (9.32%)
+Reading physics_allparticle_016000.vtk... (10.64%)
+Reading physics_allparticle_018000.vtk... (11.96%)
+Reading physics_allparticle_020000.vtk... (13.28%)
+Processing dataset 1/10 (10.00%) completed
+Processing dataset 2/10 (20.00%) completed
+Processing dataset 3/10 (30.00%) completed
+Processing dataset 4/10 (40.00%) completed
+Processing dataset 5/10 (50.00%) completed
+Processing dataset 6/10 (60.00%) completed
+Processing dataset 7/10 (70.00%) completed
+Processing dataset 8/10 (80.00%) completed
+Processing dataset 9/10 (90.00%) completed
+Processing dataset 10/10 (100.00%) completed
+Combined Graph Data:
+Data(x=[155537, 7], edge_index=[2, 3020533], edge_attr=[3020533, 2], y=[155537])
+Before removing nodes based on phi values
+Data(x=[155537, 7], edge_index=[2, 3020533], edge_attr=[3020533, 2], y=[155537])
+After removing nodes based on phi values
+Data(x=[59505, 7], edge_index=[2, 1934684], edge_attr=[1934684, 2], y=[59505])
+Before removing NaN and Inf nodes
+Data(x=[59505, 7], edge_index=[2, 1934684], edge_attr=[1934684, 2], y=[59505])
+NaNs or Infs in node features: 0 found.
+NaNs or Infs in labels: 0 found.
+No NaNs or Infs detected in the nodes.
+After removing NaN and Inf nodes
+Data(x=[59505, 7], edge_index=[2, 1934684], edge_attr=[1934684, 2], y=[59505])
+Data(x=[59505, 7], edge_index=[2, 1934684], edge_attr=[1934684, 2], y=[59505], train_mask=[59505], test_mask=[59505], val_mask=[59505], num_classes=2)
+tensor([-6.0000e+00,  6.0000e+00, -1.3785e-02, -5.3928e-02, -9.0938e-12,
+        -1.3889e-01,  1.5106e-01])
+tensor([200.0000, 206.0000,   1.0617,   1.3702,   0.9028,   2.2222,   0.9250])
+tensor([206.0000, 200.0000,   1.0755,   1.4242,   0.9028,   2.3611,   0.7739])
+tensor([ 0., -5.])
+tensor([6., 5.])
+tensor([ 6., 10.])
+tensor(0.)
+tensor(1.)
+tensor(1.)
+Data(x=[59505, 7], edge_index=[2, 1934684], edge_attr=[1934684, 2], y=[59505], train_mask=[59505], test_mask=[59505], val_mask=[59505], num_classes=2)
+Data(x=[59505, 7], edge_index=[2, 1934684], edge_attr=[1934684, 2], y=[59505], train_mask=[59505], test_mask=[59505], val_mask=[59505], num_classes=2)
+Testing trainning starting ................................................................
+
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/spawn.py", line 131, in _main
+    prepare(preparation_data)
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/spawn.py", line 246, in prepare
+    _fixup_main_from_path(data['init_main_from_path'])
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/spawn.py", line 297, in _fixup_main_from_path
+    main_content = runpy.run_path(main_path,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 286, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "/ocean/projects/eng170006p/ussqww/NDD_ML-main/Multi-gpu_test.py", line 1394, in <module>
+    p.start()
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/process.py", line 121, in start
+    self._popen = self._Popen(self)
+                  ^^^^^^^^^^^^^^^^^
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/context.py", line 224, in _Popen
+    return _default_context.get_context().Process._Popen(process_obj)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/context.py", line 289, in _Popen
+    return Popen(process_obj)
+           ^^^^^^^^^^^^^^^^^^
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/popen_spawn_posix.py", line 32, in __init__
+    super().__init__(process_obj)
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/popen_fork.py", line 19, in __init__
+    self._launch(process_obj)
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/popen_spawn_posix.py", line 42, in _launch
+    prep_data = spawn.get_preparation_data(process_obj._name)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/spawn.py", line 164, in get_preparation_data
+    _check_not_importing_main()
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/spawn.py", line 140, in _check_not_importing_main
+    raise RuntimeError('''
+RuntimeError: 
+        An attempt has been made to start a new process before the
+        current process has finished its bootstrapping phase.
+
+        This probably means that you are not using fork to start your
+        child processes and you have forgotten to use the proper idiom
+        in the main module:
+
+            if __name__ == '__main__':
+                freeze_support()
+                ...
+
+        The "freeze_support()" line can be omitted if the program
+        is not going to be frozen to produce an executable.
+
+        To fix this issue, refer to the "Safe importing of main module"
+        section in https://docs.python.org/3/library/multiprocessing.html
+        
+Using devices: ['cuda:0', 'cuda:1']
+Reading physics_allparticle_000000.vtk... (0.07%)
+Reading physics_allparticle_002000.vtk... (1.39%)
+Reading physics_allparticle_004000.vtk... (2.71%)
+Reading physics_allparticle_006000.vtk... (4.03%)
+Reading physics_allparticle_008000.vtk... (5.35%)
+Reading physics_allparticle_010000.vtk... (6.68%)
+Reading physics_allparticle_012000.vtk... (8.00%)
+Reading physics_allparticle_014000.vtk... (9.32%)
+Reading physics_allparticle_016000.vtk... (10.64%)
+Reading physics_allparticle_018000.vtk... (11.96%)
+Reading physics_allparticle_020000.vtk... (13.28%)
+Processing dataset 1/10 (10.00%) completed
+Processing dataset 2/10 (20.00%) completed
+Processing dataset 3/10 (30.00%) completed
+Processing dataset 4/10 (40.00%) completed
+Processing dataset 5/10 (50.00%) completed
+Processing dataset 6/10 (60.00%) completed
+Processing dataset 7/10 (70.00%) completed
+Processing dataset 8/10 (80.00%) completed
+Processing dataset 9/10 (90.00%) completed
+Processing dataset 10/10 (100.00%) completed
+Combined Graph Data:
+Data(x=[155537, 7], edge_index=[2, 3020533], edge_attr=[3020533, 2], y=[155537])
+Before removing nodes based on phi values
+Data(x=[155537, 7], edge_index=[2, 3020533], edge_attr=[3020533, 2], y=[155537])
+After removing nodes based on phi values
+Data(x=[59505, 7], edge_index=[2, 1934684], edge_attr=[1934684, 2], y=[59505])
+Before removing NaN and Inf nodes
+Data(x=[59505, 7], edge_index=[2, 1934684], edge_attr=[1934684, 2], y=[59505])
+NaNs or Infs in node features: 0 found.
+NaNs or Infs in labels: 0 found.
+No NaNs or Infs detected in the nodes.
+After removing NaN and Inf nodes
+Data(x=[59505, 7], edge_index=[2, 1934684], edge_attr=[1934684, 2], y=[59505])
+Data(x=[59505, 7], edge_index=[2, 1934684], edge_attr=[1934684, 2], y=[59505], train_mask=[59505], test_mask=[59505], val_mask=[59505], num_classes=2)
+tensor([-6.0000e+00,  6.0000e+00, -1.3785e-02, -5.3928e-02, -9.0938e-12,
+        -1.3889e-01,  1.5106e-01])
+tensor([200.0000, 206.0000,   1.0617,   1.3702,   0.9028,   2.2222,   0.9250])
+tensor([206.0000, 200.0000,   1.0755,   1.4242,   0.9028,   2.3611,   0.7739])
+tensor([ 0., -5.])
+tensor([6., 5.])
+tensor([ 6., 10.])
+tensor(0.)
+tensor(1.)
+tensor(1.)
+Data(x=[59505, 7], edge_index=[2, 1934684], edge_attr=[1934684, 2], y=[59505], train_mask=[59505], test_mask=[59505], val_mask=[59505], num_classes=2)
+Data(x=[59505, 7], edge_index=[2, 1934684], edge_attr=[1934684, 2], y=[59505], train_mask=[59505], test_mask=[59505], val_mask=[59505], num_classes=2)
+Testing trainning starting ................................................................
+
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/spawn.py", line 131, in _main
+    prepare(preparation_data)
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/spawn.py", line 246, in prepare
+    _fixup_main_from_path(data['init_main_from_path'])
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/spawn.py", line 297, in _fixup_main_from_path
+    main_content = runpy.run_path(main_path,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 286, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "/ocean/projects/eng170006p/ussqww/NDD_ML-main/Multi-gpu_test.py", line 1394, in <module>
+    p.start()
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/process.py", line 121, in start
+    self._popen = self._Popen(self)
+                  ^^^^^^^^^^^^^^^^^
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/context.py", line 224, in _Popen
+    return _default_context.get_context().Process._Popen(process_obj)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/context.py", line 289, in _Popen
+    return Popen(process_obj)
+           ^^^^^^^^^^^^^^^^^^
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/popen_spawn_posix.py", line 32, in __init__
+    super().__init__(process_obj)
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/popen_fork.py", line 19, in __init__
+    self._launch(process_obj)
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/popen_spawn_posix.py", line 42, in _launch
+    prep_data = spawn.get_preparation_data(process_obj._name)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/spawn.py", line 164, in get_preparation_data
+    _check_not_importing_main()
+  File "/jet/home/ussqww/.conda/envs/pyg/lib/python3.12/multiprocessing/spawn.py", line 140, in _check_not_importing_main
+    raise RuntimeError('''
+RuntimeError: 
+        An attempt has been made to start a new process before the
+        current process has finished its bootstrapping phase.
+
+        This probably means that you are not using fork to start your
+        child processes and you have forgotten to use the proper idiom
+        in the main module:
+
+            if __name__ == '__main__':
+                freeze_support()
+                ...
+
+        The "freeze_support()" line can be omitted if the program
+        is not going to be frozen to produce an executable.
+
+        To fix this issue, refer to the "Safe importing of main module"
+        section in https://docs.python.org/3/library/multiprocessing.html
+        
