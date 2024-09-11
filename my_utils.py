@@ -221,26 +221,10 @@ def read_all_folders_vtk_pairs(root_folder):
     return vtk_pairs
 
 def read_all_vtks_and_interpolate(folder_path):
-    """
-    Reads VTK files in the specified folder that have a numeric identifier
-    within a defined range and at specific intervals, sorts them by numeric order,
-    and then processes the data through interpolation.
-
-    Args:
-        folder_path (str): Path to the folder containing VTK files.
-        grid_size (float): The grid size for spatial hashing in the interpolation process.
-
-    Returns:
-        dict: A dictionary where each key is the numeric identifier of the file and the value is
-              a dictionary of interpolated scalar fields plus a channel filled with the numeric identifier.
-        np.array: The x-coordinates of the interpolation grid.
-        np.array: The y-coordinates of the interpolation grid.
-    """
     vtk_files = [file for file in os.listdir(folder_path)
                  if file.startswith("physics_allparticle") and file.endswith(".vtk")]
     vtk_files_sorted = sorted(vtk_files, key=sort_key_func)
 
-    # Filter the sorted files based on specific criteria
     vtk_files_filtered = [file for file in vtk_files_sorted
                           if 0 <= int(re.findall(r'\d+', file)[0]) <= 20000
                           and int(re.findall(r'\d+', file)[0]) % 2000 == 0]
@@ -248,59 +232,94 @@ def read_all_vtks_and_interpolate(folder_path):
     total_files = len(vtk_files_filtered)
     all_data = []
 
-    # Reading and processing the filtered VTK files
     for index, filename in enumerate(vtk_files_filtered):
-        try:
-            filepath = os.path.join(folder_path, filename)
-            data = read_mesh_cellCon(filepath, 0)
-            if not data or not isinstance(data[0], np.ndarray) or data[0].size == 0:
-                print(f"Warning: No valid point data in {filename}")
-                continue
-            all_data.append((filename, data))
-            progress = (index + 1) / total_files * 100
-            print(f"Progress: {progress:.2f}% - Processed {filename}")
-        except Exception as e:
-            print(f"Error processing {filename}: {e}")
+        filepath = os.path.join(folder_path, filename)
+        data = read_mesh_cellCon(filepath, 0)
+        if not data or not isinstance(data[0], np.ndarray) or data[0].size == 0:
+            print(f"Warning: No valid point data in {filename}")
             continue
+        all_data.append((filename, data))
+        print(f"Progress: {(index + 1) / total_files * 100:.2f}% - Processed {filename}")
 
     if not all_data:
         print("No valid data available from files.")
         return None, None, None
 
-    # Determine the bounds for the interpolation grid using the points from data[0]
-    all_points = np.concatenate([data[0] for _, data in all_data])
-    min_x, min_y = np.min(all_points, axis=0)
-    max_x, max_y = np.max(all_points, axis=0)
-    max_x = max(max_x, max_y)
-    max_y = max(max_x, max_y)
-    min_x = min(min_x, min_y)
-    min_y = min(min_x, min_y)
-
-    x_coords = np.arange(min_x, max_x + 1, 1)
-    y_coords = np.arange(min_y, max_y + 1, 1)
+    # Define the consistent grid dimensions directly
+    print(f"Interpoalting...")
+    domain_sz = 300
+    x_coords = np.arange(-domain_sz/2, domain_sz/2)
+    y_coords = np.arange(-domain_sz/2, domain_sz/2)
     grid_x, grid_y = np.meshgrid(x_coords, y_coords)
     grid_points = np.vstack([grid_x.ravel(), grid_y.ravel()]).T
 
     interpolated_data = {}
-    # Process each file and create the data structure with additional channel
     for filename, data in all_data:
-        numeric_id = re.findall(r'\d+', filename)[0]  # Extract numeric identifier from filename
+        numeric_id = re.findall(r'\d+', filename)[0]
         unique_points, scalar_fields = data[0], data[1]
         dataset = {}
         for field_name, values in scalar_fields.items():
             interpolated_values = interpolate_features(unique_points, {field_name: values}, grid_points, 1)
-            interpolated_matrix = interpolated_values[field_name].reshape(len(y_coords), len(x_coords))
+            interpolated_matrix = interpolated_values[field_name].reshape(domain_sz, domain_sz)
             dataset[field_name] = interpolated_matrix
-        
-        # Create a matrix filled with the numeric identifier divided by 100 and converted to an integer
-        iterations_matrix = np.full_like(interpolated_matrix, int(int(numeric_id) / 100), dtype=np.float32)
-        dataset['iterations'] = iterations_matrix  # Additional channel
 
-        interpolated_data[numeric_id] = dataset  # Store under numeric identifier
+        iterations_matrix = np.full((domain_sz, domain_sz), int(int(numeric_id) / 100), dtype=np.float32)
+        dataset['iterations'] = iterations_matrix
+
+        interpolated_data[numeric_id] = dataset
 
     print("All files processed and interpolated.")
     return interpolated_data, grid_x, grid_y
 
+# def read_all_vtks_and_interpolate(folder_path):
+#     vtk_files = [file for file in os.listdir(folder_path)
+#                  if file.startswith("physics_allparticle") and file.endswith(".vtk")]
+#     vtk_files_sorted = sorted(vtk_files, key=sort_key_func)
+
+#     vtk_files_filtered = [file for file in vtk_files_sorted
+#                           if 0 <= int(re.findall(r'\d+', file)[0]) <= 20000
+#                           and int(re.findall(r'\d+', file)[0]) % 2000 == 0]
+
+#     total_files = len(vtk_files_filtered)
+#     all_data = []
+
+#     for index, filename in enumerate(vtk_files_filtered):
+#         filepath = os.path.join(folder_path, filename)
+#         data = read_mesh_cellCon(filepath, 0)
+#         if not data or not isinstance(data[0], np.ndarray) or data[0].size == 0:
+#             print(f"Warning: No valid point data in {filename}")
+#             continue
+#         all_data.append((filename, data))
+#         print(f"Progress: {(index + 1) / total_files * 100:.2f}% - Processed {filename}")
+
+#     if not all_data:
+#         print("No valid data available from files.")
+#         return None, None, None
+
+#     # Define the consistent grid dimensions directly
+#     x_coords = np.arange(0, 200)
+#     y_coords = np.arange(0, 200)
+#     grid_x, grid_y = np.meshgrid(x_coords, y_coords)
+#     grid_points = np.vstack([grid_x.ravel(), grid_y.ravel()]).T
+
+#     interpolated_data = {}
+#     for filename, data in all_data:
+#         numeric_id = re.findall(r'\d+', filename)[0]
+#         unique_points, scalar_fields = data[0], data[1]
+#         dataset = {}
+#         for field_name, values in scalar_fields.items():
+#             interpolated_values = interpolate_features(unique_points, {field_name: values}, grid_points, 1)
+#             interpolated_matrix = interpolated_values[field_name].reshape(200, 200)
+#             dataset[field_name] = interpolated_matrix
+
+#         iterations_matrix = np.full((200, 200), int(int(numeric_id) / 100), dtype=np.float32)
+#         dataset['iterations'] = iterations_matrix
+
+#         interpolated_data[numeric_id] = dataset
+
+#     print("All files processed and interpolated.")
+#     return interpolated_data, grid_x, grid_y
+    
 def preprocess_data(interpolated_data):
     """
     Prepare data for training by processing all entries in interpolated data. It uses the phi from

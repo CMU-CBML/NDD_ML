@@ -227,37 +227,52 @@ class ResidualGCN(torch.nn.Module):
         
         x = self.final_conv(x, edge_index)
         return x
-    
-class ConvolutionalAutoencoder(nn.Module):
+
+class ConvolutionalAutoencoder(torch.nn.Module):
     def __init__(self):
         super().__init__()
         # Encoder
-        self.conv1 = torch.nnConv2d(3, 84, kernel_size=3, stride=2, padding=1)  # 200x200x3 -> 100x100x84
-        self.conv2 = torch.nnConv2d(84, 168, kernel_size=3, stride=2, padding=1) # 100x100x84 -> 50x50x168
-        self.conv3 = torch.nnConv2d(168, 336, kernel_size=3, stride=2, padding=1) # 50x50x168 -> 25x25x336
-        self.conv4 = torch.nnConv2d(336, 672, kernel_size=3, stride=2, padding=1) # 25x25x336 -> 12x12x672
+        self.conv1 = torch.nn.Conv2d(3, 84, kernel_size=3, stride=1, padding=1)  # Assuming no stride change
+        self.pool1 = torch.nn.MaxPool2d(2, 2)  # MaxPooling
+        self.conv2 = torch.nn.Conv2d(84, 168, kernel_size=3, stride=1, padding=1)  # Assuming no stride change
+        self.pool2 = torch.nn.MaxPool2d(2, 2)  # MaxPooling
+        self.conv3 = torch.nn.Conv2d(168, 336, kernel_size=3, stride=1, padding=1)  # Assuming no stride change
+        self.pool3 = torch.nn.MaxPool2d(2, 2)  # MaxPooling
+        # self.conv4 = torch.nn.Conv2d(336, 672, kernel_size=3, stride=1, padding=1)  # Assuming no stride change
+        # self.pool4 = torch.nn.MaxPool2d(2, 2)  # MaxPooling
 
         # Decoder
-        self.t_conv1 = torch.nnConvTranspose2d(672, 336, kernel_size=3, stride=2, padding=1, output_padding=1)  # 12x12x672 -> 25x25x336
-        self.t_conv2 = torch.nnConvTranspose2d(336, 168, kernel_size=3, stride=2, padding=1, output_padding=1)  # 25x25x336 -> 50x50x168
-        self.t_conv3 = torch.nnConvTranspose2d(168, 84, kernel_size=3, stride=2, padding=1, output_padding=1)  # 50x50x168 -> 100x100x84
-        self.t_conv4 = torch.nnConvTranspose2d(84, 1, kernel_size=3, stride=2, padding=1, output_padding=1)  # 100x100x84 -> 200x200x1
+        # self.t_conv1 = torch.nn.ConvTranspose2d(672, 336, kernel_size=3, stride=2, padding=1, output_padding=1)
+        self.t_conv2 = torch.nn.ConvTranspose2d(336, 168, kernel_size=3, stride=2, padding=1, output_padding=1)
+        self.t_conv3 = torch.nn.ConvTranspose2d(168, 84, kernel_size=3, stride=2, padding=1, output_padding=1)
+        self.t_conv4 = torch.nn.ConvTranspose2d(84, 1, kernel_size=3, stride=2, padding=1, output_padding=1)
 
     def forward(self, x):
-        # Encoder
+        # Encoding path
         x = F.relu(self.conv1(x))
+        x = self.pool1(x)
+        print(f'After conv1 and pool: {x.size()}')
         x = F.relu(self.conv2(x))
+        x = self.pool2(x)
+        print(f'After conv2 and pool: {x.size()}')
         x = F.relu(self.conv3(x))
-        x = F.relu(self.conv4(x))
+        x = self.pool3(x)
+        print(f'After conv3 and pool: {x.size()}')
+        # x = F.relu(self.conv4(x))
+        # x = self.pool4(x)
+        # print(f'After conv4 and pool: {x.size()}')
 
-        # Decoder
-        x = F.relu(self.t_conv1(x))
+        # Decoding path
+        # x = F.relu(self.t_conv1(x))
+        print(f'After t_conv1: {x.size()}')
         x = F.relu(self.t_conv2(x))
+        print(f'After t_conv2: {x.size()}')
         x = F.relu(self.t_conv3(x))
+        print(f'After t_conv3: {x.size()}')
         x = torch.sigmoid(self.t_conv4(x))
-
+        print(f'Final output: {x.size()}')
         return x
-
+    
 # def train():
 #     model.train()
 #     optimizer.zero_grad()
