@@ -1,0 +1,652 @@
+2024-09-19 17:26:48,804 - Environment info:
+------------------------------------------------------------
+sys.platform: linux
+Python: 3.9.0 (default, Nov 15 2020, 14:28:56) [GCC 7.3.0]
+CUDA available: True
+CUDA_HOME: /usr/local/cuda
+NVCC: 
+GPU 0: Tesla V100-SXM2-32GB
+GCC: gcc (GCC) 8.5.0 20210514 (Red Hat 8.5.0-18)
+PyTorch: 2.1.0+cu121
+PyTorch compiling details: PyTorch built with:
+  - GCC 9.3
+  - C++ Version: 201703
+  - Intel(R) oneAPI Math Kernel Library Version 2021.4-Product Build 20210904 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v3.1.1 (Git Hash 64f6bcbcbab628e96f33a62c3e975f8535a7bde4)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - LAPACK is enabled (usually provided by MKL)
+  - NNPACK is enabled
+  - CPU capability usage: AVX512
+  - CUDA Runtime 12.1
+  - NVCC architecture flags: -gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_80,code=sm_80;-gencode;arch=compute_86,code=sm_86;-gencode;arch=compute_90,code=sm_90
+  - CuDNN 8.9.2
+  - Magma 2.6.1
+  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, CUDA_VERSION=12.1, CUDNN_VERSION=8.9.2, CXX_COMPILER=/opt/rh/devtoolset-9/root/usr/bin/c++, CXX_FLAGS= -D_GLIBCXX_USE_CXX11_ABI=0 -fabi-version=11 -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOROCTRACER -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -O2 -fPIC -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-unused-parameter -Wno-unused-function -Wno-unused-result -Wno-strict-overflow -Wno-strict-aliasing -Wno-stringop-overflow -Wno-psabi -Wno-error=pedantic -Wno-error=old-style-cast -Wno-invalid-partial-specialization -Wno-unused-private-field -Wno-aligned-allocation-unavailable -Wno-missing-braces -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Werror=cast-function-type -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, TORCH_DISABLE_GPU_ASSERTS=ON, TORCH_VERSION=2.1.0, USE_CUDA=ON, USE_CUDNN=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=1, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, 
+
+TorchVision: 0.16.0+cu121
+OpenCV: 4.10.0
+openstl: 1.0.0
+------------------------------------------------------------
+
+2024-09-19 17:26:48,806 - 
+device: 	cuda	
+dist: 	False	
+res_dir: 	work_dirs	
+ex_name: 	custom_exp	
+fp16: 	False	
+torchscript: 	False	
+seed: 	42	
+fps: 	False	
+test: 	False	
+deterministic: 	False	
+batch_size: 	5	
+val_batch_size: 	5	
+num_workers: 	4	
+data_root: 	./data	
+dataname: 	custom	
+pre_seq_length: 	10	
+aft_seq_length: 	20	
+total_length: 	30	
+use_augment: 	False	
+use_prefetcher: 	False	
+drop_last: 	False	
+method: 	simvp	
+config_file: 	None	
+model_type: 	gSTA	
+drop: 	0.0	
+drop_path: 	0.0	
+overwrite: 	False	
+epoch: 	100	
+log_step: 	1	
+opt: 	adam	
+opt_eps: 	None	
+opt_betas: 	None	
+momentum: 	0.9	
+weight_decay: 	0.0	
+clip_grad: 	None	
+clip_mode: 	norm	
+no_display_method_info: 	False	
+sched: 	onecycle	
+lr: 	0.001	
+lr_k_decay: 	1.0	
+warmup_lr: 	1e-05	
+min_lr: 	1e-06	
+final_div_factor: 	10000.0	
+warmup_epoch: 	0	
+decay_epoch: 	100	
+decay_rate: 	0.1	
+filter_bias_and_bn: 	False	
+gpus: 	[0]	
+metric_for_bestckpt: 	val_loss	
+ckpt_path: 	None	
+metrics: 	['mse', 'mae']	
+in_shape: 	[10, 1, 32, 32]	
+N_S: 	4	
+N_T: 	8	
+hid_S: 	64	
+hid_T: 	256	
+2024-09-19 17:26:48,806 - Model info:
+SimVP_Model(
+  (enc): Encoder(
+    (enc): Sequential(
+      (0): ConvSC(
+        (conv): BasicConv2d(
+          (conv): Conv2d(1, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (norm): GroupNorm(2, 64, eps=1e-05, affine=True)
+          (act): SiLU()
+        )
+      )
+      (1): ConvSC(
+        (conv): BasicConv2d(
+          (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+          (norm): GroupNorm(2, 64, eps=1e-05, affine=True)
+          (act): SiLU()
+        )
+      )
+      (2): ConvSC(
+        (conv): BasicConv2d(
+          (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (norm): GroupNorm(2, 64, eps=1e-05, affine=True)
+          (act): SiLU()
+        )
+      )
+      (3): ConvSC(
+        (conv): BasicConv2d(
+          (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+          (norm): GroupNorm(2, 64, eps=1e-05, affine=True)
+          (act): SiLU()
+        )
+      )
+    )
+  )
+  (dec): Decoder(
+    (dec): Sequential(
+      (0): ConvSC(
+        (conv): BasicConv2d(
+          (conv): Sequential(
+            (0): Conv2d(64, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): PixelShuffle(upscale_factor=2)
+          )
+          (norm): GroupNorm(2, 64, eps=1e-05, affine=True)
+          (act): SiLU()
+        )
+      )
+      (1): ConvSC(
+        (conv): BasicConv2d(
+          (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (norm): GroupNorm(2, 64, eps=1e-05, affine=True)
+          (act): SiLU()
+        )
+      )
+      (2): ConvSC(
+        (conv): BasicConv2d(
+          (conv): Sequential(
+            (0): Conv2d(64, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+            (1): PixelShuffle(upscale_factor=2)
+          )
+          (norm): GroupNorm(2, 64, eps=1e-05, affine=True)
+          (act): SiLU()
+        )
+      )
+      (3): ConvSC(
+        (conv): BasicConv2d(
+          (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (norm): GroupNorm(2, 64, eps=1e-05, affine=True)
+          (act): SiLU()
+        )
+      )
+    )
+    (readout): Conv2d(64, 1, kernel_size=(1, 1), stride=(1, 1))
+  )
+  (hid): MidMetaNet(
+    (enc): Sequential(
+      (0): MetaBlock(
+        (block): GASubBlock(
+          (norm1): BatchNorm2d(640, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (attn): SpatialAttention(
+            (proj_1): Conv2d(640, 640, kernel_size=(1, 1), stride=(1, 1))
+            (activation): GELU(approximate='none')
+            (spatial_gating_unit): AttentionModule(
+              (conv0): Conv2d(640, 640, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=640)
+              (conv_spatial): Conv2d(640, 640, kernel_size=(7, 7), stride=(1, 1), padding=(9, 9), dilation=(3, 3), groups=640)
+              (conv1): Conv2d(640, 1280, kernel_size=(1, 1), stride=(1, 1))
+            )
+            (proj_2): Conv2d(640, 640, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (drop_path): DropPath(drop_prob=0.010)
+          (norm2): BatchNorm2d(640, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (mlp): MixMlp(
+            (fc1): Conv2d(640, 5120, kernel_size=(1, 1), stride=(1, 1))
+            (dwconv): DWConv(
+              (dwconv): Conv2d(5120, 5120, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=5120)
+            )
+            (act): GELU(approximate='none')
+            (fc2): Conv2d(5120, 640, kernel_size=(1, 1), stride=(1, 1))
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (reduction): Conv2d(640, 256, kernel_size=(1, 1), stride=(1, 1))
+      )
+      (1): MetaBlock(
+        (block): GASubBlock(
+          (norm1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (attn): SpatialAttention(
+            (proj_1): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+            (activation): GELU(approximate='none')
+            (spatial_gating_unit): AttentionModule(
+              (conv0): Conv2d(256, 256, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=256)
+              (conv_spatial): Conv2d(256, 256, kernel_size=(7, 7), stride=(1, 1), padding=(9, 9), dilation=(3, 3), groups=256)
+              (conv1): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1))
+            )
+            (proj_2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (drop_path): DropPath(drop_prob=0.009)
+          (norm2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (mlp): MixMlp(
+            (fc1): Conv2d(256, 2048, kernel_size=(1, 1), stride=(1, 1))
+            (dwconv): DWConv(
+              (dwconv): Conv2d(2048, 2048, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=2048)
+            )
+            (act): GELU(approximate='none')
+            (fc2): Conv2d(2048, 256, kernel_size=(1, 1), stride=(1, 1))
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (2): MetaBlock(
+        (block): GASubBlock(
+          (norm1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (attn): SpatialAttention(
+            (proj_1): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+            (activation): GELU(approximate='none')
+            (spatial_gating_unit): AttentionModule(
+              (conv0): Conv2d(256, 256, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=256)
+              (conv_spatial): Conv2d(256, 256, kernel_size=(7, 7), stride=(1, 1), padding=(9, 9), dilation=(3, 3), groups=256)
+              (conv1): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1))
+            )
+            (proj_2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (drop_path): DropPath(drop_prob=0.007)
+          (norm2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (mlp): MixMlp(
+            (fc1): Conv2d(256, 2048, kernel_size=(1, 1), stride=(1, 1))
+            (dwconv): DWConv(
+              (dwconv): Conv2d(2048, 2048, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=2048)
+            )
+            (act): GELU(approximate='none')
+            (fc2): Conv2d(2048, 256, kernel_size=(1, 1), stride=(1, 1))
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (3): MetaBlock(
+        (block): GASubBlock(
+          (norm1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (attn): SpatialAttention(
+            (proj_1): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+            (activation): GELU(approximate='none')
+            (spatial_gating_unit): AttentionModule(
+              (conv0): Conv2d(256, 256, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=256)
+              (conv_spatial): Conv2d(256, 256, kernel_size=(7, 7), stride=(1, 1), padding=(9, 9), dilation=(3, 3), groups=256)
+              (conv1): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1))
+            )
+            (proj_2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (drop_path): DropPath(drop_prob=0.006)
+          (norm2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (mlp): MixMlp(
+            (fc1): Conv2d(256, 2048, kernel_size=(1, 1), stride=(1, 1))
+            (dwconv): DWConv(
+              (dwconv): Conv2d(2048, 2048, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=2048)
+            )
+            (act): GELU(approximate='none')
+            (fc2): Conv2d(2048, 256, kernel_size=(1, 1), stride=(1, 1))
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (4): MetaBlock(
+        (block): GASubBlock(
+          (norm1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (attn): SpatialAttention(
+            (proj_1): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+            (activation): GELU(approximate='none')
+            (spatial_gating_unit): AttentionModule(
+              (conv0): Conv2d(256, 256, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=256)
+              (conv_spatial): Conv2d(256, 256, kernel_size=(7, 7), stride=(1, 1), padding=(9, 9), dilation=(3, 3), groups=256)
+              (conv1): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1))
+            )
+            (proj_2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (drop_path): DropPath(drop_prob=0.004)
+          (norm2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (mlp): MixMlp(
+            (fc1): Conv2d(256, 2048, kernel_size=(1, 1), stride=(1, 1))
+            (dwconv): DWConv(
+              (dwconv): Conv2d(2048, 2048, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=2048)
+            )
+            (act): GELU(approximate='none')
+            (fc2): Conv2d(2048, 256, kernel_size=(1, 1), stride=(1, 1))
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (5): MetaBlock(
+        (block): GASubBlock(
+          (norm1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (attn): SpatialAttention(
+            (proj_1): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+            (activation): GELU(approximate='none')
+            (spatial_gating_unit): AttentionModule(
+              (conv0): Conv2d(256, 256, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=256)
+              (conv_spatial): Conv2d(256, 256, kernel_size=(7, 7), stride=(1, 1), padding=(9, 9), dilation=(3, 3), groups=256)
+              (conv1): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1))
+            )
+            (proj_2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (drop_path): DropPath(drop_prob=0.003)
+          (norm2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (mlp): MixMlp(
+            (fc1): Conv2d(256, 2048, kernel_size=(1, 1), stride=(1, 1))
+            (dwconv): DWConv(
+              (dwconv): Conv2d(2048, 2048, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=2048)
+            )
+            (act): GELU(approximate='none')
+            (fc2): Conv2d(2048, 256, kernel_size=(1, 1), stride=(1, 1))
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (6): MetaBlock(
+        (block): GASubBlock(
+          (norm1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (attn): SpatialAttention(
+            (proj_1): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+            (activation): GELU(approximate='none')
+            (spatial_gating_unit): AttentionModule(
+              (conv0): Conv2d(256, 256, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=256)
+              (conv_spatial): Conv2d(256, 256, kernel_size=(7, 7), stride=(1, 1), padding=(9, 9), dilation=(3, 3), groups=256)
+              (conv1): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1))
+            )
+            (proj_2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (drop_path): DropPath(drop_prob=0.001)
+          (norm2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (mlp): MixMlp(
+            (fc1): Conv2d(256, 2048, kernel_size=(1, 1), stride=(1, 1))
+            (dwconv): DWConv(
+              (dwconv): Conv2d(2048, 2048, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=2048)
+            )
+            (act): GELU(approximate='none')
+            (fc2): Conv2d(2048, 256, kernel_size=(1, 1), stride=(1, 1))
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+      )
+      (7): MetaBlock(
+        (block): GASubBlock(
+          (norm1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (attn): SpatialAttention(
+            (proj_1): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+            (activation): GELU(approximate='none')
+            (spatial_gating_unit): AttentionModule(
+              (conv0): Conv2d(256, 256, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=256)
+              (conv_spatial): Conv2d(256, 256, kernel_size=(7, 7), stride=(1, 1), padding=(9, 9), dilation=(3, 3), groups=256)
+              (conv1): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1))
+            )
+            (proj_2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (drop_path): Identity()
+          (norm2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (mlp): MixMlp(
+            (fc1): Conv2d(256, 2048, kernel_size=(1, 1), stride=(1, 1))
+            (dwconv): DWConv(
+              (dwconv): Conv2d(2048, 2048, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=2048)
+            )
+            (act): GELU(approximate='none')
+            (fc2): Conv2d(2048, 256, kernel_size=(1, 1), stride=(1, 1))
+            (drop): Dropout(p=0.0, inplace=False)
+          )
+        )
+        (reduction): Conv2d(256, 640, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+  )
+)
+| module                           | #parameters or shape   | #flops     |
+|:---------------------------------|:-----------------------|:-----------|
+| model                            | 18.603M                | 2.333G     |
+|  enc.enc                         |  0.112M                |  0.223G    |
+|   enc.enc.0.conv                 |   0.768K               |   9.175M   |
+|    enc.enc.0.conv.conv           |    0.64K               |    5.898M  |
+|    enc.enc.0.conv.norm           |    0.128K              |    3.277M  |
+|   enc.enc.1.conv                 |   37.056K              |   95.191M  |
+|    enc.enc.1.conv.conv           |    36.928K             |    94.372M |
+|    enc.enc.1.conv.norm           |    0.128K              |    0.819M  |
+|   enc.enc.2.conv                 |   37.056K              |   95.191M  |
+|    enc.enc.2.conv.conv           |    36.928K             |    94.372M |
+|    enc.enc.2.conv.norm           |    0.128K              |    0.819M  |
+|   enc.enc.3.conv                 |   37.056K              |   23.798M  |
+|    enc.enc.3.conv.conv           |    36.928K             |    23.593M |
+|    enc.enc.3.conv.norm           |    0.128K              |    0.205M  |
+|  dec                             |  0.37M                 |  0.953G    |
+|   dec.dec                        |   0.37M                |   0.952G   |
+|    dec.dec.0.conv                |    0.148M              |    95.191M |
+|    dec.dec.1.conv                |    37.056K             |    95.191M |
+|    dec.dec.2.conv                |    0.148M              |    0.381G  |
+|    dec.dec.3.conv                |    37.056K             |    0.381G  |
+|   dec.readout                    |   65                   |   0.655M   |
+|    dec.readout.weight            |    (1, 64, 1, 1)       |            |
+|    dec.readout.bias              |    (1,)                |            |
+|  hid.enc                         |  18.121M               |  1.157G    |
+|   hid.enc.0                      |   8.468M               |   0.541G   |
+|    hid.enc.0.block               |    8.304M              |    0.531G  |
+|    hid.enc.0.reduction           |    0.164M              |    10.486M |
+|   hid.enc.1.block                |   1.356M               |   86.442M  |
+|    hid.enc.1.block.layer_scale_1 |    (256,)              |            |
+|    hid.enc.1.block.layer_scale_2 |    (256,)              |            |
+|    hid.enc.1.block.norm1         |    0.512K              |    81.92K  |
+|    hid.enc.1.block.attn          |    0.283M              |    17.99M  |
+|    hid.enc.1.block.norm2         |    0.512K              |    81.92K  |
+|    hid.enc.1.block.mlp           |    1.071M              |    68.289M |
+|   hid.enc.2.block                |   1.356M               |   86.442M  |
+|    hid.enc.2.block.layer_scale_1 |    (256,)              |            |
+|    hid.enc.2.block.layer_scale_2 |    (256,)              |            |
+|    hid.enc.2.block.norm1         |    0.512K              |    81.92K  |
+|    hid.enc.2.block.attn          |    0.283M              |    17.99M  |
+|    hid.enc.2.block.norm2         |    0.512K              |    81.92K  |
+|    hid.enc.2.block.mlp           |    1.071M              |    68.289M |
+|   hid.enc.3.block                |   1.356M               |   86.442M  |
+|    hid.enc.3.block.layer_scale_1 |    (256,)              |            |
+|    hid.enc.3.block.layer_scale_2 |    (256,)              |            |
+|    hid.enc.3.block.norm1         |    0.512K              |    81.92K  |
+|    hid.enc.3.block.attn          |    0.283M              |    17.99M  |
+|    hid.enc.3.block.norm2         |    0.512K              |    81.92K  |
+|    hid.enc.3.block.mlp           |    1.071M              |    68.289M |
+|   hid.enc.4.block                |   1.356M               |   86.442M  |
+|    hid.enc.4.block.layer_scale_1 |    (256,)              |            |
+|    hid.enc.4.block.layer_scale_2 |    (256,)              |            |
+|    hid.enc.4.block.norm1         |    0.512K              |    81.92K  |
+|    hid.enc.4.block.attn          |    0.283M              |    17.99M  |
+|    hid.enc.4.block.norm2         |    0.512K              |    81.92K  |
+|    hid.enc.4.block.mlp           |    1.071M              |    68.289M |
+|   hid.enc.5.block                |   1.356M               |   86.442M  |
+|    hid.enc.5.block.layer_scale_1 |    (256,)              |            |
+|    hid.enc.5.block.layer_scale_2 |    (256,)              |            |
+|    hid.enc.5.block.norm1         |    0.512K              |    81.92K  |
+|    hid.enc.5.block.attn          |    0.283M              |    17.99M  |
+|    hid.enc.5.block.norm2         |    0.512K              |    81.92K  |
+|    hid.enc.5.block.mlp           |    1.071M              |    68.289M |
+|   hid.enc.6.block                |   1.356M               |   86.442M  |
+|    hid.enc.6.block.layer_scale_1 |    (256,)              |            |
+|    hid.enc.6.block.layer_scale_2 |    (256,)              |            |
+|    hid.enc.6.block.norm1         |    0.512K              |    81.92K  |
+|    hid.enc.6.block.attn          |    0.283M              |    17.99M  |
+|    hid.enc.6.block.norm2         |    0.512K              |    81.92K  |
+|    hid.enc.6.block.mlp           |    1.071M              |    68.289M |
+|   hid.enc.7                      |   1.52M                |   96.928M  |
+|    hid.enc.7.block               |    1.356M              |    86.442M |
+|    hid.enc.7.reduction           |    0.164M              |    10.486M |
+--------------------------------------------------------------------------------
+
+2024-09-19 17:27:42,924 - Epoch 1: Lr: 0.0000505 | Train Loss: 0.0672820 | Vali Loss: 0.0225043
+2024-09-19 17:27:54,977 - Epoch 2: Lr: 0.0000636 | Train Loss: 0.0271186 | Vali Loss: 0.0148237
+2024-09-19 17:28:07,846 - Epoch 3: Lr: 0.0000817 | Train Loss: 0.0177211 | Vali Loss: 0.0110262
+2024-09-19 17:28:19,802 - Epoch 4: Lr: 0.0001046 | Train Loss: 0.0134437 | Vali Loss: 0.0098857
+2024-09-19 17:28:31,709 - Epoch 5: Lr: 0.0001321 | Train Loss: 0.0109467 | Vali Loss: 0.0087989
+2024-09-19 17:28:44,092 - Epoch 6: Lr: 0.0001639 | Train Loss: 0.0096466 | Vali Loss: 0.0078403
+2024-09-19 17:28:56,977 - Epoch 7: Lr: 0.0001996 | Train Loss: 0.0086417 | Vali Loss: 0.0072331
+2024-09-19 17:29:08,900 - Epoch 8: Lr: 0.0002388 | Train Loss: 0.0077131 | Vali Loss: 0.0064008
+2024-09-19 17:29:21,124 - Epoch 9: Lr: 0.0002811 | Train Loss: 0.0068594 | Vali Loss: 0.0053270
+2024-09-19 17:29:33,041 - Epoch 10: Lr: 0.0003261 | Train Loss: 0.0059148 | Vali Loss: 0.0048853
+2024-09-19 17:29:44,951 - Epoch 11: Lr: 0.0003731 | Train Loss: 0.0050891 | Vali Loss: 0.0040383
+2024-09-19 17:29:56,886 - Epoch 12: Lr: 0.0004218 | Train Loss: 0.0044262 | Vali Loss: 0.0040500
+2024-09-19 17:30:08,314 - Epoch 13: Lr: 0.0004716 | Train Loss: 0.0038879 | Vali Loss: 0.0039533
+2024-09-19 17:30:20,891 - Epoch 14: Lr: 0.0005219 | Train Loss: 0.0036745 | Vali Loss: 0.0030588
+2024-09-19 17:30:33,294 - Epoch 15: Lr: 0.0005722 | Train Loss: 0.0033516 | Vali Loss: 0.0037497
+2024-09-19 17:30:44,678 - Epoch 16: Lr: 0.0006219 | Train Loss: 0.0029021 | Vali Loss: 0.0025515
+2024-09-19 17:30:56,582 - Epoch 17: Lr: 0.0006705 | Train Loss: 0.0025810 | Vali Loss: 0.0028593
+2024-09-19 17:31:08,245 - Epoch 18: Lr: 0.0007175 | Train Loss: 0.0021312 | Vali Loss: 0.0023814
+2024-09-19 17:31:20,200 - Epoch 19: Lr: 0.0007622 | Train Loss: 0.0019604 | Vali Loss: 0.0024224
+2024-09-19 17:31:31,411 - Epoch 20: Lr: 0.0008043 | Train Loss: 0.0020207 | Vali Loss: 0.0023273
+2024-09-19 17:31:43,349 - Epoch 21: Lr: 0.0008433 | Train Loss: 0.0019668 | Vali Loss: 0.0022531
+2024-09-19 17:31:55,243 - Epoch 22: Lr: 0.0008787 | Train Loss: 0.0014907 | Vali Loss: 0.0027902
+2024-09-19 17:32:07,156 - Epoch 23: Lr: 0.0009101 | Train Loss: 0.0012548 | Vali Loss: 0.0021382
+2024-09-19 17:32:19,069 - Epoch 24: Lr: 0.0009373 | Train Loss: 0.0013918 | Vali Loss: 0.0019338
+2024-09-19 17:32:31,137 - Epoch 25: Lr: 0.0009599 | Train Loss: 0.0010993 | Vali Loss: 0.0023930
+2024-09-19 17:32:42,944 - Epoch 26: Lr: 0.0009776 | Train Loss: 0.0009308 | Vali Loss: 0.0020551
+2024-09-19 17:32:54,305 - Epoch 27: Lr: 0.0009902 | Train Loss: 0.0011291 | Vali Loss: 0.0024293
+2024-09-19 17:33:05,776 - Epoch 28: Lr: 0.0009977 | Train Loss: 0.0010287 | Vali Loss: 0.0019158
+2024-09-19 17:33:17,973 - Epoch 29: Lr: 0.0010000 | Train Loss: 0.0009399 | Vali Loss: 0.0022289
+2024-09-19 17:33:29,446 - Epoch 30: Lr: 0.0009994 | Train Loss: 0.0009122 | Vali Loss: 0.0018260
+2024-09-19 17:33:41,460 - Epoch 31: Lr: 0.0009978 | Train Loss: 0.0008306 | Vali Loss: 0.0018342
+2024-09-19 17:33:52,906 - Epoch 32: Lr: 0.0009952 | Train Loss: 0.0007298 | Vali Loss: 0.0017302
+2024-09-19 17:34:04,754 - Epoch 33: Lr: 0.0009917 | Train Loss: 0.0006406 | Vali Loss: 0.0017843
+2024-09-19 17:34:16,414 - Epoch 34: Lr: 0.0009871 | Train Loss: 0.0006293 | Vali Loss: 0.0017763
+2024-09-19 17:34:27,823 - Epoch 35: Lr: 0.0009815 | Train Loss: 0.0006221 | Vali Loss: 0.0017290
+2024-09-19 17:34:39,980 - Epoch 36: Lr: 0.0009750 | Train Loss: 0.0005936 | Vali Loss: 0.0017348
+2024-09-19 17:34:51,540 - Epoch 37: Lr: 0.0009675 | Train Loss: 0.0005621 | Vali Loss: 0.0018083
+2024-09-19 17:35:02,925 - Epoch 38: Lr: 0.0009591 | Train Loss: 0.0005489 | Vali Loss: 0.0019605
+2024-09-19 17:35:14,915 - Epoch 39: Lr: 0.0009497 | Train Loss: 0.0005573 | Vali Loss: 0.0017148
+2024-09-19 17:35:27,354 - Epoch 40: Lr: 0.0009395 | Train Loss: 0.0005082 | Vali Loss: 0.0017860
+2024-09-19 17:35:38,769 - Epoch 41: Lr: 0.0009283 | Train Loss: 0.0005204 | Vali Loss: 0.0018823
+2024-09-19 17:35:50,858 - Epoch 42: Lr: 0.0009163 | Train Loss: 0.0006547 | Vali Loss: 0.0017430
+2024-09-19 17:36:02,229 - Epoch 43: Lr: 0.0009035 | Train Loss: 0.0005356 | Vali Loss: 0.0017275
+2024-09-19 17:36:13,449 - Epoch 44: Lr: 0.0008898 | Train Loss: 0.0005041 | Vali Loss: 0.0016837
+2024-09-19 17:36:25,318 - Epoch 45: Lr: 0.0008754 | Train Loss: 0.0004334 | Vali Loss: 0.0016946
+2024-09-19 17:36:36,716 - Epoch 46: Lr: 0.0008602 | Train Loss: 0.0004286 | Vali Loss: 0.0016957
+2024-09-19 17:36:48,094 - Epoch 47: Lr: 0.0008443 | Train Loss: 0.0004688 | Vali Loss: 0.0017089
+2024-09-19 17:36:59,531 - Epoch 48: Lr: 0.0008277 | Train Loss: 0.0004718 | Vali Loss: 0.0017795
+2024-09-19 17:37:10,933 - Epoch 49: Lr: 0.0008104 | Train Loss: 0.0004029 | Vali Loss: 0.0017314
+2024-09-19 17:37:22,557 - Epoch 50: Lr: 0.0007925 | Train Loss: 0.0003858 | Vali Loss: 0.0016722
+2024-09-19 17:37:34,493 - Epoch 51: Lr: 0.0007740 | Train Loss: 0.0003459 | Vali Loss: 0.0016441
+2024-09-19 17:37:46,363 - Epoch 52: Lr: 0.0007550 | Train Loss: 0.0003294 | Vali Loss: 0.0017161
+2024-09-19 17:37:57,542 - Epoch 53: Lr: 0.0007354 | Train Loss: 0.0003150 | Vali Loss: 0.0016553
+2024-09-19 17:38:08,972 - Epoch 54: Lr: 0.0007154 | Train Loss: 0.0003081 | Vali Loss: 0.0017107
+2024-09-19 17:38:20,427 - Epoch 55: Lr: 0.0006949 | Train Loss: 0.0003178 | Vali Loss: 0.0016611
+2024-09-19 17:38:31,787 - Epoch 56: Lr: 0.0006741 | Train Loss: 0.0003122 | Vali Loss: 0.0017503
+2024-09-19 17:38:44,306 - Epoch 57: Lr: 0.0006529 | Train Loss: 0.0003107 | Vali Loss: 0.0016653
+2024-09-19 17:38:55,708 - Epoch 58: Lr: 0.0006314 | Train Loss: 0.0002897 | Vali Loss: 0.0016233
+2024-09-19 17:39:08,765 - Epoch 59: Lr: 0.0006096 | Train Loss: 0.0002992 | Vali Loss: 0.0016692
+2024-09-19 17:39:20,259 - Epoch 60: Lr: 0.0005876 | Train Loss: 0.0002987 | Vali Loss: 0.0016594
+2024-09-19 17:39:31,690 - Epoch 61: Lr: 0.0005654 | Train Loss: 0.0003031 | Vali Loss: 0.0016898
+2024-09-19 17:39:42,967 - Epoch 62: Lr: 0.0005431 | Train Loss: 0.0002887 | Vali Loss: 0.0016636
+2024-09-19 17:39:54,208 - Epoch 63: Lr: 0.0005207 | Train Loss: 0.0002711 | Vali Loss: 0.0016180
+2024-09-19 17:40:06,330 - Epoch 64: Lr: 0.0004983 | Train Loss: 0.0002757 | Vali Loss: 0.0016299
+2024-09-19 17:40:17,773 - Epoch 65: Lr: 0.0004758 | Train Loss: 0.0002672 | Vali Loss: 0.0015894
+2024-09-19 17:40:29,962 - Epoch 66: Lr: 0.0004535 | Train Loss: 0.0003059 | Vali Loss: 0.0016231
+2024-09-19 17:40:41,436 - Epoch 67: Lr: 0.0004312 | Train Loss: 0.0002800 | Vali Loss: 0.0017019
+2024-09-19 17:40:52,902 - Epoch 68: Lr: 0.0004090 | Train Loss: 0.0002659 | Vali Loss: 0.0016466
+2024-09-19 17:41:04,376 - Epoch 69: Lr: 0.0003871 | Train Loss: 0.0002563 | Vali Loss: 0.0016581
+2024-09-19 17:41:15,866 - Epoch 70: Lr: 0.0003653 | Train Loss: 0.0002504 | Vali Loss: 0.0016754
+2024-09-19 17:41:27,977 - Epoch 71: Lr: 0.0003439 | Train Loss: 0.0002581 | Vali Loss: 0.0016446
+2024-09-19 17:41:39,254 - Epoch 72: Lr: 0.0003227 | Train Loss: 0.0002464 | Vali Loss: 0.0016213
+2024-09-19 17:41:50,905 - Epoch 73: Lr: 0.0003019 | Train Loss: 0.0002456 | Vali Loss: 0.0016611
+2024-09-19 17:42:02,349 - Epoch 74: Lr: 0.0002815 | Train Loss: 0.0002450 | Vali Loss: 0.0016563
+2024-09-19 17:42:13,790 - Epoch 75: Lr: 0.0002615 | Train Loss: 0.0002702 | Vali Loss: 0.0016404
+2024-09-19 17:42:25,968 - Epoch 76: Lr: 0.0002421 | Train Loss: 0.0002465 | Vali Loss: 0.0017211
+2024-09-19 17:42:37,482 - Epoch 77: Lr: 0.0002231 | Train Loss: 0.0002766 | Vali Loss: 0.0016644
+2024-09-19 17:42:48,932 - Epoch 78: Lr: 0.0002047 | Train Loss: 0.0002668 | Vali Loss: 0.0016295
+2024-09-19 17:43:00,395 - Epoch 79: Lr: 0.0001869 | Train Loss: 0.0002538 | Vali Loss: 0.0016281
+2024-09-19 17:43:11,874 - Epoch 80: Lr: 0.0001697 | Train Loss: 0.0002365 | Vali Loss: 0.0016763
+2024-09-19 17:43:23,515 - Epoch 81: Lr: 0.0001532 | Train Loss: 0.0002409 | Vali Loss: 0.0016699
+2024-09-19 17:43:35,298 - Epoch 82: Lr: 0.0001374 | Train Loss: 0.0002423 | Vali Loss: 0.0016311
+2024-09-19 17:43:46,732 - Epoch 83: Lr: 0.0001223 | Train Loss: 0.0002330 | Vali Loss: 0.0016327
+2024-09-19 17:43:58,552 - Epoch 84: Lr: 0.0001080 | Train Loss: 0.0002398 | Vali Loss: 0.0016334
+2024-09-19 17:44:10,186 - Epoch 85: Lr: 0.0000945 | Train Loss: 0.0002450 | Vali Loss: 0.0016354
+2024-09-19 17:44:21,832 - Epoch 86: Lr: 0.0000818 | Train Loss: 0.0002332 | Vali Loss: 0.0016305
+2024-09-19 17:44:33,261 - Epoch 87: Lr: 0.0000699 | Train Loss: 0.0002348 | Vali Loss: 0.0016382
+2024-09-19 17:44:44,989 - Epoch 88: Lr: 0.0000589 | Train Loss: 0.0002296 | Vali Loss: 0.0016297
+2024-09-19 17:44:56,963 - Epoch 89: Lr: 0.0000488 | Train Loss: 0.0002264 | Vali Loss: 0.0016390
+2024-09-19 17:45:08,558 - Epoch 90: Lr: 0.0000396 | Train Loss: 0.0002363 | Vali Loss: 0.0016274
+2024-09-19 17:45:19,921 - Epoch 91: Lr: 0.0000313 | Train Loss: 0.0002286 | Vali Loss: 0.0016353
+2024-09-19 17:45:31,096 - Epoch 92: Lr: 0.0000239 | Train Loss: 0.0002313 | Vali Loss: 0.0016323
+2024-09-19 17:45:42,460 - Epoch 93: Lr: 0.0000176 | Train Loss: 0.0002327 | Vali Loss: 0.0016333
+2024-09-19 17:45:54,683 - Epoch 94: Lr: 0.0000122 | Train Loss: 0.0002425 | Vali Loss: 0.0016382
+2024-09-19 17:46:06,178 - Epoch 95: Lr: 0.0000077 | Train Loss: 0.0002250 | Vali Loss: 0.0016297
+2024-09-19 17:46:17,605 - Epoch 96: Lr: 0.0000043 | Train Loss: 0.0002278 | Vali Loss: 0.0016292
+2024-09-19 17:46:29,030 - Epoch 97: Lr: 0.0000019 | Train Loss: 0.0002276 | Vali Loss: 0.0016357
+2024-09-19 17:46:40,421 - Epoch 98: Lr: 0.0000004 | Train Loss: 0.0002286 | Vali Loss: 0.0016329
+2024-09-19 17:46:52,059 - Epoch 99: Lr: 0.0000000 | Train Loss: 0.0002287 | Vali Loss: 0.0016335
+2024-09-19 17:46:59,902 - mse:32.96308898925781, mae:271.9569091796875
+2024-09-19 18:27:29,378 - No such comm: 0807d23118784f909d61c9710612d148
+2024-09-19 18:27:29,414 - No such comm: ea72537899f54676b9cceef6aedeae5c
+2024-09-19 18:27:29,426 - No such comm: e3fd7e4dc25c474085bdb7175ec331c8
+2024-09-19 18:27:29,438 - No such comm: 9c491837c48342b9ac25fe2fc32656a9
+2024-09-19 18:27:29,453 - No such comm: f21d8da83809451f87cfe15db1a09131
+2024-09-19 18:27:29,464 - No such comm: e456c178e0ec483ebc86bd9991d45393
+2024-09-19 18:27:29,476 - No such comm: adbbecd48f3b4c16ab2fb8936a39e159
+2024-09-19 18:27:29,489 - No such comm: 6532dba54e1e43119d5f82659159ce4b
+2024-09-19 18:27:29,501 - No such comm: 4588bf8414514625a0ea3104f8a444a3
+2024-09-19 18:27:29,513 - No such comm: 5b837be2742d43f08adfdf816f4d93a4
+2024-09-19 18:27:29,528 - No such comm: c3ab90474f4d4ca8899e54548d28b76c
+2024-09-19 18:27:29,540 - No such comm: 244c095816f84a2e8b1d17fb69c39776
+2024-09-19 18:27:29,552 - No such comm: 915560cb04bf4f5e8a320d5c10085b56
+2024-09-19 18:27:29,567 - No such comm: a79d604b5ec2447cbaf0939bdbea0104
+2024-09-19 18:27:29,579 - No such comm: 87c924043ca343e499cc5df3aec7e9b9
+2024-09-19 18:27:29,592 - No such comm: 1707d590f4294afc96a635337577d631
+2024-09-19 18:27:29,604 - No such comm: 0fc2b5d755674b9598c2d7f38179f78c
+2024-09-19 18:27:29,619 - No such comm: 159d184c395d42dfb095d555e8fa4d44
+2024-09-19 18:27:29,631 - No such comm: e2eaa5083fbc4cda8f270409e385a099
+2024-09-19 18:27:29,643 - No such comm: 848f673a6d99484db5726f2b79805455
+2024-09-19 18:27:29,657 - No such comm: e1fcc356d92249698128d6706166adc3
+2024-09-19 18:27:29,669 - No such comm: c00765378e7647eeabb7d7b4ff833bf7
+2024-09-19 18:27:29,682 - No such comm: 6fbd4f9f2e534a8e941d4cb8ad3328b8
+2024-09-19 18:27:29,696 - No such comm: bd73d7c01d45430dbec41a9947537b90
+2024-09-19 18:27:29,708 - No such comm: 06055e8c59bd437194a1355a98e51596
+2024-09-19 18:27:29,720 - No such comm: 90b7324b612d4e639b3a38ac5ec0ba30
+2024-09-19 18:27:29,735 - No such comm: ae78b405b94b4498bf54040141564110
+2024-09-19 18:27:29,748 - No such comm: 6b5bce415d2744ab91ff2af1066f4a20
+2024-09-19 18:27:29,760 - No such comm: 2fb399d40f41470cbdb222c5789a00ce
+2024-09-19 18:27:29,775 - No such comm: d97795044ee7441d824a44b34c63a05c
+2024-09-19 18:27:29,787 - No such comm: 9f85185470b64d2391e44b78143228b3
+2024-09-19 18:27:29,799 - No such comm: 271ee0036eab4ea1b40e993f3b3201db
+2024-09-19 18:27:29,813 - No such comm: 635cd1cb46ab4e92b7fb98f99bf834fb
+2024-09-19 18:27:29,825 - No such comm: b99c8a66885442d58c9a86abcccddcde
+2024-09-19 18:27:29,837 - No such comm: 650460ae74bd4542a30671a1ebe98230
+2024-09-19 18:27:29,849 - No such comm: 395503988a2a4f2197c3c58945fc1baa
+2024-09-19 18:27:29,863 - No such comm: a337e39adffe4f44bf33321c14c716dd
+2024-09-19 18:27:29,875 - No such comm: f1eb407209bd4557ae3dac6e5fc338fe
+2024-09-19 18:27:29,886 - No such comm: 7736cbf814a74f129372906fbbad53e2
+2024-09-19 18:27:29,899 - No such comm: aa50cc4dd7fb4ae7bf68ae82e572c1d2
+2024-09-19 18:27:29,911 - No such comm: fa6df2db4f914198981e33a212c8be1a
+2024-09-19 18:27:29,922 - No such comm: 0f973875573147c6883cb9a1341411f5
+2024-09-19 18:27:29,936 - No such comm: f335d93db1ff41f8b31b28f4e7afcc52
+2024-09-19 18:27:29,948 - No such comm: 6b850e84c29d40809afe62149772a4cd
+2024-09-19 18:27:29,959 - No such comm: 4f77ae4b19d444e381fc9c198d8cdc8a
+2024-09-19 18:27:29,974 - No such comm: b22708d6d2224e8f926273e5b0e3fb84
+2024-09-19 18:27:29,985 - No such comm: da152b9a72f544288650a1bf44efa5b5
+2024-09-19 18:27:29,997 - No such comm: eaebf172cde34b688fd41534c7b3e7da
+2024-09-19 18:27:30,011 - No such comm: 5b2a6e8032b5450abdd0d55ad13675a1
+2024-09-19 18:27:30,022 - No such comm: ebd0a434c20840dcbb57834917873220
+2024-09-19 18:27:30,033 - No such comm: 605ab495704b40a58cbc070c51e1cd9a
+2024-09-19 18:27:30,045 - No such comm: be58d6222c644250a5ce89db31c97a7e
+2024-09-19 18:27:30,058 - No such comm: 1eb09a7d2fff42b49fb3a165dc685fcd
+2024-09-19 18:27:30,070 - No such comm: fb34ba9d1a954e968679207c51ae7a5e
+2024-09-19 18:27:30,082 - No such comm: b61a001d1fd54cabbab7d5a42a045996
+2024-09-19 18:27:30,097 - No such comm: 2353c33ec2294e8c92dc30202ee6b905
+2024-09-19 18:27:30,110 - No such comm: 8bfb801462b74ea7b3ca75f60eab9348
+2024-09-19 18:27:30,123 - No such comm: 2660e7d206f94cd89801df85635e0dd5
+2024-09-19 18:27:30,137 - No such comm: d98e7a93610a405f85820a1d1038c18b
+2024-09-19 18:27:30,149 - No such comm: 6b338430ee154c86a9bd82f8456e560c
+2024-09-19 18:27:30,161 - No such comm: 36890f47616d4c4da35e710f48aa2aeb
+2024-09-19 18:27:30,175 - No such comm: ae89ae046408407da104c1ba7895c117
+2024-09-19 18:27:30,186 - No such comm: 6617e90413c14c9380f6376b83f4b50e
+2024-09-19 18:27:30,198 - No such comm: ea41e80115cd435895231d8e27dbc570
+2024-09-19 18:27:30,212 - No such comm: 9b4dd9dac9e9493198aff9d6ec42aa77
+2024-09-19 18:27:30,223 - No such comm: eb9f7139dd9d4cefbdac5c8c0eb4a1d1
+2024-09-19 18:27:30,234 - No such comm: 60a16dd6018a4b13b214a47da307c7c0
+2024-09-19 18:27:30,248 - No such comm: 50f1ce1d17c94db8a727884bc2229af0
+2024-09-19 18:27:30,259 - No such comm: ffdb6443efc14eb8ad9ee940e7735cf3
+2024-09-19 18:27:30,271 - No such comm: 0de6dd535f6c482fb5f98d6cd2f7cee8
+2024-09-19 18:27:30,283 - No such comm: 5020294c88f048fd82fc7330ccfb0554
+2024-09-19 18:27:30,296 - No such comm: b50b73fe9faf4b24813ccfce8107b16c
+2024-09-19 18:27:30,307 - No such comm: 5b25729003cd44eca02bbed4d4dadbfa
+2024-09-19 18:27:30,319 - No such comm: b4fc9c876b05492a83d70d58df726784
+2024-09-19 18:27:30,334 - No such comm: 2ed5f337195d4230b4d7c384825136f3
+2024-09-19 18:27:30,346 - No such comm: 166e699a3e9045e589a2c905a62056b9
+2024-09-19 18:27:30,358 - No such comm: 496f6dc3902f4fc493f3f3057a184643
+2024-09-19 18:27:30,373 - No such comm: 95aef7bf245e4fad8ead2d3c5f6e959e
+2024-09-19 18:27:30,385 - No such comm: 09df5852e0464f5fac50537e58e7395f
+2024-09-19 18:27:30,396 - No such comm: 4e14054272414f5db04a8e7328acb9ab
+2024-09-19 18:27:30,411 - No such comm: 72e3672fc4f642c8af932a2920621631
+2024-09-19 18:27:30,423 - No such comm: a6142b76e7f6480288696f91c8b04f6a
+2024-09-19 18:27:30,434 - No such comm: e39cabf07ec4434cada8f3ad6eaf2efc
+2024-09-19 18:27:30,449 - No such comm: 3896b9fa33094277b5d983f20dbefe01
+2024-09-19 18:27:30,460 - No such comm: 56af798d69094422a6a2f750785b1004
+2024-09-19 18:27:30,471 - No such comm: 2c99bb5fdf3f430d8e69fa21b8c81df9
+2024-09-19 18:27:30,483 - No such comm: 7be0bf3efa914224b2c0ff26d77ccf09
+2024-09-19 18:27:30,496 - No such comm: e6fed2cb315249f987307cfdb2d317df
+2024-09-19 18:27:30,507 - No such comm: 0ac0b9cc32a54d46890995bf0b4f9d43
+2024-09-19 18:27:30,519 - No such comm: e0edd1acc38b4c10bceb64bb8e3acf96
+2024-09-19 18:27:30,532 - No such comm: 76ae7107b80742e28c5e4488c1b65d1e
+2024-09-19 18:27:30,543 - No such comm: 39657053b07d488c9a6e0e6ada54fd10
+2024-09-19 18:27:30,554 - No such comm: 8661553360bf4382b8185d662e3f8987
+2024-09-19 18:27:30,568 - No such comm: d7002e1e93ef4aa2abd8bff86e82c907
+2024-09-19 18:27:30,580 - No such comm: 81585a8b3152414fb3bfbb2deb6d0fcd
+2024-09-19 18:27:30,591 - No such comm: 6dc1602a5dd64bc6be747b6d11dbf9a9
+2024-09-19 18:27:30,605 - No such comm: ca706ba6234e4074af717af377a0da64
+2024-09-19 18:27:30,616 - No such comm: e7b6f4bd76784a0b847598c8c60ae9a8
+2024-09-19 18:27:30,627 - No such comm: 2a9634bb90d742378c5c3402b1e1f01d
+2024-09-19 18:27:30,640 - No such comm: 8c7104f7a7dc4b859493606624be71ad
+2024-09-19 18:27:30,651 - No such comm: ec171181aa5e4552938486dbf88e0010

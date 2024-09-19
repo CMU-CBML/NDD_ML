@@ -283,95 +283,6 @@ def read_mesh_cellCon(filename, grid_size=1.0, verbose=1):
 
     return unique_points, deduplicated_data, elements, pd.DataFrame(edge_attributes)
 
-# Define the required scalar fields
-REQUIRED_FIELDS = ['phi', 'synaptogenesis', 'tubulin', 'tips', 'theta']
-
-def read_mesh_cellCon_exception(filename, grid_size=1.0, verbose=1):
-    """Reads and processes mesh data from a VTK file, ignoring z-coordinates and checking for NaN or INF values."""
-    try:
-        with open(filename, 'r') as file:
-            lines = file.readlines()
-
-        # Find the start and end of the points section
-        points_start = lines.index(next(line for line in lines if 'POINTS' in line))
-        num_points = int(lines[points_start].split()[1])
-        points_end = points_start + 1 + num_points
-
-        # Extract points, ignoring z coordinates if present
-        raw_points = [list(map(float, line.strip().split()))[:2] for line in lines[points_start + 1:points_end]]
-        raw_points = np.array(raw_points)
-
-        # Check for NaN or INF values in points
-        if np.isnan(raw_points).any() or np.isinf(raw_points).any():
-            print(f"Warning: NaN or INF detected in point coordinates in file '{filename}'.")
-            # Optionally handle or filter these values
-            raw_points = np.nan_to_num(raw_points, nan=np.finfo(float).min, posinf=np.finfo(float).max, neginf=np.finfo(float).min)
-
-        unique_points, indices = np.unique(raw_points, axis=0, return_inverse=True)
-
-        # Parse scalar fields and handle duplicates by taking the maximum value
-        scalar_fields = {}
-        i = points_end
-        while i < len(lines):
-            if 'SCALARS' in lines[i]:
-                field_name = lines[i].split()[1]
-                lookup_table_start = i + 2  # Points to the start of scalar values
-                values = []
-                for line in lines[lookup_table_start:lookup_table_start + num_points]:
-                    try:
-                        values.append(float(line.strip()))
-                    except ValueError:
-                        print(f"Warning: Invalid scalar value in field '{field_name}' in file '{filename}'.")
-                        values.append(np.finfo(float).min)  # Assign a default value or handle as needed
-
-                values = np.array(values)
-
-                if any(np.isnan(values)) or any(np.isinf(values)):
-                    print(f"Warning: NaN or INF detected in scalar values for field '{field_name}' in file '{filename}'.")
-                    values = np.nan_to_num(values, nan=np.finfo(float).min, posinf=np.finfo(float).max, neginf=np.finfo(float).min)
-                scalar_fields[field_name] = values
-                i = lookup_table_start + num_points
-            else:
-                i += 1
-
-        # Check if all required fields are present
-        missing_fields = [field for field in REQUIRED_FIELDS if field not in scalar_fields]
-        if missing_fields:
-            print(f"Error: Missing required fields {missing_fields} in file '{filename}'. Skipping this file.")
-            return None  # Skip processing this file
-
-        # Deduplicate scalar fields by taking the maximum value
-        deduplicated_data = {name: np.full(len(unique_points), -np.inf, dtype=float) for name in REQUIRED_FIELDS}
-        for name in REQUIRED_FIELDS:
-            data = scalar_fields[name]
-            for idx, value in zip(indices, data):
-                if value > deduplicated_data[name][idx]:
-                    deduplicated_data[name][idx] = value
-
-        # Extract elements and compute edge attributes
-        cells_start = lines.index(next(line for line in lines if 'CELLS' in line))
-        num_cells = int(lines[cells_start].split()[1])
-        cells_end = cells_start + 1 + num_cells
-        elements = [list(map(int, line.strip().split()))[1:] for line in lines[cells_start + 1:cells_end]]
-        elements = [indices[element] for element in elements]
-
-        # Assuming edge_attributes need to be generated or are part of the dataset
-        edge_attributes = {}  # This would need actual implementation
-
-        if verbose:
-            print(f"Processed scalar fields: {list(scalar_fields.keys())} in file '{filename}'.")
-            print("Number of unique points:", len(unique_points))
-            print("Sample deduplicated scalar data:", {k: v[:5] for k, v in deduplicated_data.items()})
-
-        return unique_points, deduplicated_data, elements, pd.DataFrame(edge_attributes)
-    
-    except StopIteration:
-        print(f"Error: 'POINTS' or 'CELLS' section not found in file '{filename}'. Skipping this file.")
-        return None
-    except Exception as e:
-        print(f"Error processing file '{filename}': {e}. Skipping this file.")
-        return None
-    
 def calculate_pseudo_coordinates(points, edge_index):
     """Calculate pseudo-coordinates for each edge based on node coordinates."""
     pseudo_coords = []
@@ -417,39 +328,116 @@ def interpolate_features(current_points, current_point_data, next_points, k=3):
 
     return interpolated_data
 
-from scipy.spatial import cKDTree
 import numpy as np
+import pandas as pd
+from scipy.spatial import cKDTree
+
+# Define the required scalar fields
+REQUIRED_FIELDS = ['phi']
+# REQUIRED_FIELDS = ['phi', 'synaptogenesis', 'tubulin', 'tips', 'theta']
+
+def read_mesh_cellCon_exception(filename, grid_size=1.0, verbose=1):
+    """Reads and processes mesh data from a VTK file, ignoring z-coordinates and checking for NaN or INF values."""
+    try:
+        points = []
+        scalar_fields = {}
+        num_points = 0
+
+        # Read file line by line to avoid memory overload
+        with open(filename, 'r') as file:
+            for line in file:
+                if 'POINTS' in line:
+                    num_points = int(line.split()[1])
+                    break
+
+            # Extract points, ignoring z coordinates if present
+            for _ in range(num_points):
+                line = file.readline().strip()
+                points.append(list(map(float, line.split()))[:2])
+
+            # Convert points to NumPy array for fast computation
+            points = np.array(points)
+
+            # Handle potential NaN/Inf values
+            if np.isnan(points).any() or np.isinf(points).any():
+                print(f"Warning: NaN or INF detected in point coordinates in file '{filename}'.")
+                points = np.nan_to_num(points, nan=np.finfo(float).min, posinf=np.finfo(float).max, neginf=np.finfo(float).min)
+
+            unique_points, indices = np.unique(points, axis=0, return_inverse=True)
+
+            # Read scalar fields
+            for line in file:
+                if 'SCALARS' in line:
+                    field_name = line.split()[1]
+                    file.readline()  # Skip LOOKUP_TABLE line
+                    field_values = np.array([float(file.readline().strip()) for _ in range(num_points)])
+                    
+                    # Handle NaN/Inf in scalar values
+                    if np.isnan(field_values).any() or np.isinf(field_values).any():
+                        print(f"Warning: NaN or INF detected in scalar values for field '{field_name}' in file '{filename}'.")
+                        field_values = np.nan_to_num(field_values, nan=np.finfo(float).min, posinf=np.finfo(float).max, neginf=np.finfo(float).min)
+                    
+                    scalar_fields[field_name] = field_values
+
+        # Ensure all required fields are present
+        missing_fields = [field for field in REQUIRED_FIELDS if field not in scalar_fields]
+        if missing_fields:
+            print(f"Error: Missing required fields {missing_fields} in file '{filename}'. Skipping this file.")
+            return None
+
+        # Correct deduplication: Use average or sum instead of maximum
+        deduplicated_data = {
+            name: np.zeros(len(unique_points)) for name in REQUIRED_FIELDS
+        }
+        
+        for name in REQUIRED_FIELDS:
+            counts = np.bincount(indices)
+            sums = np.bincount(indices, weights=scalar_fields[name])
+            deduplicated_data[name] = sums / counts  # Average values for duplicate points
+
+        # Extract elements
+        with open(filename, 'r') as file:
+            for line in file:
+                if 'CELLS' in line:
+                    num_cells = int(line.split()[1])
+                    elements = []
+                    for _ in range(num_cells):
+                        element = list(map(int, file.readline().strip().split()))[1:]
+                        elements.append(indices[element])
+
+        # Assuming edge attributes need to be generated or are part of the dataset
+        edge_attributes = {}  # This would need actual implementation
+
+        if verbose:
+            print(f"Processed scalar fields: {list(scalar_fields.keys())} in file '{filename}'.")
+            print("Number of unique points:", len(unique_points))
+            print("Sample deduplicated scalar data:", {k: v[:5] for k, v in deduplicated_data.items()})
+
+        return unique_points, deduplicated_data, elements, pd.DataFrame(edge_attributes)
+
+    except StopIteration:
+        print(f"Error: 'POINTS' or 'CELLS' section not found in file '{filename}'. Skipping this file.")
+        return None
+    except Exception as e:
+        print(f"Error processing file '{filename}': {e}. Skipping this file.")
+        return None
+
 
 def interpolate_features_cKD(current_points, current_point_data, next_points, k=3):
     """
     Interpolate feature data from current points to next points using k-nearest neighbors,
     optimized with cKDTree and reducing loop overhead.
-
-    Args:
-        current_points (array): Coordinates of current points where data is known.
-        current_point_data (dict): Dictionary mapping feature names to arrays of values.
-        next_points (array): Coordinates of next points where data needs to be interpolated.
-        k (int): Number of nearest neighbors to consider for interpolation.
-
-    Returns:
-        dict: A dictionary with interpolated features for each point in next_points.
     """
     tree = cKDTree(current_points)
     interpolated_data = {key: np.zeros(len(next_points)) for key in current_point_data.keys()}
-    dists, indices = tree.query(next_points, k=k)  # Perform all queries at once
+    dists, indices = tree.query(next_points, k=k)
 
-    # Iterate through keys to apply weights and compute interpolated values
+    # Use vectorized operations for faster interpolation
+    weights = np.where(dists == 0, 1, 1 / np.maximum(dists, 1e-6))
+    weight_sums = np.sum(weights, axis=1, keepdims=True)
+
     for key in current_point_data.keys():
-        values = current_point_data[key]
-        # Handle zero distances directly
-        zero_dist_mask = (dists == 0)
-        weights = np.where(zero_dist_mask, 1, 1 / np.maximum(dists, 1e-6))
-        weight_sums = np.sum(weights, axis=1)
-
-        for i, (weight, idx) in enumerate(zip(weights, indices)):
-            if zero_dist_mask[i].any():
-                interpolated_data[key][i] = values[idx[zero_dist_mask[i]][0]]
-            else:
-                interpolated_data[key][i] = np.dot(weight, values[idx]) / weight_sums[i]
+        values = current_point_data[key][indices]
+        interpolated_data[key] = np.sum(values * weights, axis=1) / weight_sums.squeeze()
 
     return interpolated_data
